@@ -1,6 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-Pruebas Unitarias con JUnit 5,com.lab04,CuentaBancaria,8,100,2,10,2,24,3,10,1,6
-Pruebas Unitarias con JUnit 5,com.lab04,Calculadora,0,28,0,2,0,7,0,6,0,5
-Pruebas Unitarias con JUnit 5,com.lab04,Transaccion,9,12,0,0,3,5,3,1,3,1
-Pruebas Unitarias con JUnit 5,com.lab04,PassValidator,0,41,0,12,0,6,0,9,0,3
-Pruebas Unitarias con JUnit 5,com.lab04,Transaccion.Tipo,0,15,0,0,0,1,0,1,0,1
