@@ -97,6 +97,79 @@ class ProductoOperacionesTest {
     }
   }
 
+  // OPERACIÓN: EXTRAER STOCK
+
+  @Nested
+  @DisplayName("2. Operación: extraerStock(int)")
+  class ExtraerStock {
+
+    @ParameterizedTest(name = "Al extraer {0} unidades, quedan {1}")
+    @MethodSource("proveerCantidadesParaExtraer")
+    @DisplayName("Extraer cantidades válidas decrementa el stock correctamente")
+    void dadoCantidadValida_cuandoExtraerStock_entoncesStockSeReduce(
+        int cantidadExtraida, int stockEsperado) {
+      // Act
+      producto.extraerStock(cantidadExtraida);
+
+      // Assert
+      assertEquals(
+          stockEsperado,
+          producto.consultarStock(),
+          "El stock final debe ser la resta del inicial menos lo extraído");
+    }
+
+    static Stream<Arguments> proveerCantidadesParaExtraer() {
+      return Stream.of(
+          Arguments.of(1, STOCK_INICIAL_NUM - 1), // Extracción mínima
+          Arguments.of(10, STOCK_INICIAL_NUM - 10), // Extracción parcial
+          Arguments.of(STOCK_INICIAL_NUM, 0) // Vaciado total del stock (límite)
+          );
+    }
+
+    @Test
+    @DisplayName(
+        "Extraer más unidades de las disponibles lanza IllegalArgumentException (Sobregiro)")
+    void dadoCantidadMayorAlStock_cuandoExtraerStock_entoncesLanzaExcepcion() {
+      // Arrange
+      int cantidadExcesiva = STOCK_INICIAL_NUM + 1; // Unidades excedentes
+
+      // Act & Assert
+      IllegalArgumentException ex =
+          assertThrows(
+              IllegalArgumentException.class,
+              () -> producto.extraerStock(cantidadExcesiva),
+              "No se debe permitir dejar el stock en valores negativos");
+
+      assertMensajeContiene(ex, "negativo");
+      // Verifica que la transacción fallida no alteró el estado original (atomicidad)
+      assertEquals(STOCK_INICIAL_NUM, producto.consultarStock(), "El stock no debió ser alterado");
+    }
+
+    @Test
+    @DisplayName("Extraer cero unidades no altera el stock (Caso límite)")
+    void dadoCantidadCero_cuandoExtraerStock_entoncesStockSeMantiene() {
+      // Act
+      producto.extraerStock(0);
+
+      // Assert
+      assertEquals(STOCK_INICIAL_NUM, producto.consultarStock());
+    }
+
+    @ParameterizedTest(name = "Rechazo de extracción {0}")
+    @ValueSource(ints = {-1, -50})
+    @DisplayName("Extraer cantidades negativas lanza IllegalArgumentException")
+    void dadoCantidadNegativa_cuandoExtraerStock_entoncesLanzaExcepcion(int cantidadNegativa) {
+      // Act & Assert
+      IllegalArgumentException ex =
+          assertThrows(
+              IllegalArgumentException.class,
+              () -> producto.extraerStock(cantidadNegativa),
+              "No se debe permitir usar valores negativos que actúen matemáticamente como sumas");
+
+      assertMensajeContiene(ex, "negativa");
+    }
+  }
+
   // MÉTODOS HELPER PRIVADOS
 
   /**
