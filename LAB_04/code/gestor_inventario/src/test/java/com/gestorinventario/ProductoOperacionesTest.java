@@ -1,6 +1,9 @@
 package com.gestorinventario;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  * Validación de operaciones y comportamiento de negocio en {@link Producto}.
@@ -77,5 +81,38 @@ class ProductoOperacionesTest {
       // Assert
       assertEquals(STOCK_INICIAL_NUM, producto.consultarStock());
     }
+
+    @ParameterizedTest(name = "Rechazo de cantidad {0}")
+    @ValueSource(ints = {-1, -10, Integer.MIN_VALUE})
+    @DisplayName("Agregar cantidades negativas lanza IllegalArgumentException")
+    void dadoCantidadNegativa_cuandoAgregarStock_entoncesLanzaExcepcion(int cantidadNegativa) {
+      // Act & Assert
+      IllegalArgumentException ex =
+          assertThrows(
+              IllegalArgumentException.class,
+              () -> producto.agregarStock(cantidadNegativa),
+              "El sistema debe bloquear intentos de corromper el stock con sumas negativas");
+
+      assertMensajeContiene(ex, "negativa");
+    }
+  }
+
+  // MÉTODOS HELPER PRIVADOS
+
+  /**
+   * Verifica que el mensaje de la excepción proporcionada contiene la subcadena esperada.
+   *
+   * @param ex excepción cuyo mensaje se va a verificar
+   * @param subcadenaEsperada texto que debe aparecer en el mensaje
+   */
+  private static void assertMensajeContiene(IllegalArgumentException ex, String subcadenaEsperada) {
+    assertNotNull(ex.getMessage(), "El mensaje de la excepción no debe ser nulo");
+    assertTrue(
+        ex.getMessage().toLowerCase().contains(subcadenaEsperada.toLowerCase()),
+        "El mensaje debe mencionar '"
+            + subcadenaEsperada
+            + "', pero fue: \""
+            + ex.getMessage()
+            + "\"");
   }
 }
