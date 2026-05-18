@@ -7,10 +7,22 @@ public class Producto {
     public int cantidad;
 
     public void agregarStock(int cantidad) {
+        if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad a agregar no puede ser negativa");
+        }
+
         this.cantidad += cantidad;
     }
 
     public void extraerStock(int cantidad) {
+        if (cantidad < 0) {
+            throw new IllegalArgumentException("La cantidad a extraer no puede ser negativa");
+        }
+
+        if (cantidad > this.cantidad) {
+            throw new IllegalArgumentException("El stock no puede quedar en negativo");
+        }
+
         this.cantidad -= cantidad;
     }
 
@@ -20,5 +32,17 @@ public class Producto {
 
     public double obtenerValorTotal() {
         return precio * cantidad;
+    }
+
+    public boolean codigoValido() {
+        return codigo != null && !codigo.trim().isEmpty();
+    }
+
+    public boolean precioValido() {
+        return precio > 0;
+    }
+
+    public boolean cantidadValida() {
+        return cantidad >= 0;
     }
 }
