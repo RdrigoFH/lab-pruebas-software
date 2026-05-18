@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -65,6 +66,16 @@ class ProductoOperacionesTest {
           Arguments.of(15, STOCK_INICIAL_NUM + 15), // Incremento estándar
           Arguments.of(1000, STOCK_INICIAL_NUM + 1000) // Incremento masivo
           );
+    }
+
+    @Test
+    @DisplayName("Agregar cero unidades no altera el stock (Caso límite)")
+    void dadoCantidadCero_cuandoAgregarStock_entoncesStockSeMantiene() {
+      // Act
+      producto.agregarStock(0);
+
+      // Assert
+      assertEquals(STOCK_INICIAL_NUM, producto.consultarStock());
     }
   }
 }
