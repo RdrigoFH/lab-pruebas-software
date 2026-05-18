@@ -173,7 +173,7 @@ class ProductoOperacionesTest {
   // CÁLCULOS DERIVADOS
 
   @Nested
-  @DisplayName("3. Cálculo: obtenerValorTotal()")
+  @DisplayName("3. Cálculo de valor del stock total")
   class CalculoValorTotal {
 
     @Test
