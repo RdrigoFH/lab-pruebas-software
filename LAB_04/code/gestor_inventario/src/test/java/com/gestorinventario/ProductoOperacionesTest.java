@@ -170,6 +170,54 @@ class ProductoOperacionesTest {
     }
   }
 
+  // CÁLCULOS DERIVADOS
+
+  @Nested
+  @DisplayName("3. Cálculo: obtenerValorTotal()")
+  class CalculoValorTotal {
+
+    @Test
+    @DisplayName("Calcula correctamente el valor total del inventario actual")
+    void dadoStockYPrecio_cuandoObtenerValorTotal_entoncesCalculaCorrectamente() {
+      // Arrange
+      double valorEsperado = STOCK_INICIAL_NUM * PRECIO_BASE_NUM; // 20 * 50.00 = 1000.00
+
+      // Act
+      double valorTotal = producto.obtenerValorTotal();
+
+      // Assert
+      assertEquals(valorEsperado, valorTotal, 0.001, "El valor total debe ser precio * cantidad");
+    }
+
+    @Test
+    @DisplayName("El valor total se actualiza dinámicamente tras alteraciones de stock")
+    void dadoMovimientosDeStock_cuandoObtenerValorTotal_entoncesReflejaCambios() {
+      // Arrange
+      producto.agregarStock(10); // Stock = 30
+      producto.extraerStock(5); // Stock = 25
+      double valorEsperadoFinal = 25 * PRECIO_BASE_NUM;
+
+      // Act
+      double valorTotal = producto.obtenerValorTotal();
+
+      // Assert
+      assertEquals(valorEsperadoFinal, valorTotal, 0.001);
+    }
+
+    @Test
+    @DisplayName("El valor total de un producto sin stock es 0.0")
+    void dadoStockVaciado_cuandoObtenerValorTotal_entoncesRetornaCero() {
+      // Arrange
+      producto.extraerStock(STOCK_INICIAL_NUM); // Stock pasa a ser 0
+
+      // Act
+      double valorTotal = producto.obtenerValorTotal();
+
+      // Assert
+      assertEquals(0.0, valorTotal, 0.001);
+    }
+  }
+
   // MÉTODOS HELPER PRIVADOS
 
   /**
