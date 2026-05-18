@@ -13,4 +13,17 @@ public class Producto {
         this.precio = precio;
         this.disponibilidad = disponibilidad;
     }
+
+    public int getId() {
+        return id;
+    }
+    public double getPrecio() {
+        return precio;
+    }
+    public boolean getDisponibilidad() {
+        return disponibilidad;
+    }
+    public String getNombre() {
+        return nombre;
+    }
 }
