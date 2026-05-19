@@ -62,12 +62,7 @@ public class CarritoCompra {
         }
     }
     public void eliminarProducto(Producto producto) {
-        for (ItemCarrito item : items) {
-            if (item.getProducto().getId() == producto.getId()) {
-                items.remove(item);
-                break;
-            }
-        }
+        items.removeIf(item -> item.getProducto().getId() == producto.getId());
         this.historialOperaciones += "- Se elimino " + producto.getNombre() + "\n";
     }
 
