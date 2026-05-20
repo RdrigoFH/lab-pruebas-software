@@ -2,19 +2,28 @@ package main.java.com.lab04.Ejercicio2;
 
 public class Producto {
 
-    private int id;
+    private String id;
     private String nombre;
     private double precio;
     private boolean disponibilidad;
 
-    public Producto(int id, String nombre, double precio, boolean disponibilidad) {
+    public Producto(String id, String nombre, double precio, boolean disponibilidad) {
+        if (id == null || id.trim().isEmpty()) {
+            throw new IllegalArgumentException("El ID del producto no puede estar vacío");
+        }
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del producto no puede estar vacío");
+        }
+        if (precio <= 0) {
+            throw new IllegalArgumentException("El precio debe ser positivo");
+        }
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.disponibilidad = disponibilidad;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
     public double getPrecio() {

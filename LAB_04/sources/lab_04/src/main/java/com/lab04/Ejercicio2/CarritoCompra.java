@@ -11,9 +11,9 @@ public class CarritoCompra {
     private static final double INTERES = 0.18;
     private static final double DESCUENTO = 0.10;
 
-    public CarritoCompra(int capacidad) {
+    public CarritoCompra(int capacidad, ServicioPrecio servicioPrecio) {
         this.items = new ArrayList<>();
-        this.servicioPrecio = new ServicioPrecioImpl(); 
+        this.servicioPrecio = servicioPrecio;
         this.total = 0.0;
         this.historialOperaciones = "Historial de operaciones:\n";
     }
@@ -80,7 +80,7 @@ public class CarritoCompra {
     }
     public double calcularPrecioTotal() {
         double precioProductos = calcularPrecioProductos();
-        double descuento = servicioPrecio.calcularDescuento(precioProductos);
+        double descuento = this.servicioPrecio.calcularDescuento(precioProductos);
         double precioFinal = precioProductos - descuento;
         double impuesto = servicioPrecio.calcularImpuesto(precioFinal);
         total = precioFinal + impuesto;
@@ -100,12 +100,12 @@ public class CarritoCompra {
         return historialOperaciones;
     }
 
-    @Override
-    double calcularDescuento(double monto){
-        return monto * DESCUENTO;
+    public double calcularDescuento() {
+        return servicioPrecio.calcularDescuento(calcularSubtotal());
     }
-    double calcularImpuesto(double monto){
-        return monto * INTERES;
+
+    public double calcularImpuesto() {
+        return servicioPrecio.calcularImpuesto(calcularSubtotal());
     }
 
 }
