@@ -1,4 +1,4 @@
-package com.lab04;
+package com.carritocompra;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,15 +20,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 /**
  * Pruebas de {@link CarritoCompra} con {@link ServicioPrecio} simulado mediante Mockito.
  *
- * <p>Verifica que el carrito delegue correctamente los cálculos de descuento e impuesto,
- * y que el total final sea matemáticamente coherente con los valores del mock.
+ * <p>Verifica que el carrito delegue correctamente los cálculos de descuento e impuesto, y que el
+ * total final sea matemáticamente coherente con los valores del mock.
  */
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CarritoCompra — pruebas con Mockito")
 class CarritoCompraMockTest {
 
-  @Mock
-  private ServicioPrecio servicioPrecioMock;
+  @Mock private ServicioPrecio servicioPrecioMock;
 
   private Producto laptop;
   private Producto mouse;
@@ -218,9 +217,10 @@ class CarritoCompraMockTest {
 
       carrito.calcularTotal();
 
-      boolean hayEntradaTotal = carrito.getHistorialOperaciones().stream()
-          .anyMatch(op -> op.contains("Total calculado"));
+      boolean hayEntradaTotal =
+          carrito.getHistorialOperaciones().stream().anyMatch(op -> op.contains("Total calculado"));
       assertTrue(hayEntradaTotal);
     }
   }
 }
+

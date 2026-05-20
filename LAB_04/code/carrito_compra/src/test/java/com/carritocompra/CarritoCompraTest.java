@@ -1,4 +1,4 @@
-package com.lab04;
+package com.carritocompra;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,24 +14,25 @@ import org.junit.jupiter.api.Test;
 /**
  * Pruebas unitarias de {@link CarritoCompra} sin mocks.
  *
- * <p>Usa una implementación stub de {@link ServicioPrecio} con descuento e impuesto en cero
- * para aislar la lógica propia del carrito.
+ * <p>Usa una implementación stub de {@link ServicioPrecio} con descuento e impuesto en cero para
+ * aislar la lógica propia del carrito.
  */
 @DisplayName("CarritoCompra — pruebas sin mocks")
 class CarritoCompraTest {
 
   /** Stub que retorna 0 en descuento e impuesto para aislar la lógica del carrito. */
-  private static final ServicioPrecio SIN_CARGOS = new ServicioPrecio() {
-    @Override
-    public double calcularDescuento(double monto) {
-      return 0.0;
-    }
+  private static final ServicioPrecio SIN_CARGOS =
+      new ServicioPrecio() {
+        @Override
+        public double calcularDescuento(double monto) {
+          return 0.0;
+        }
 
-    @Override
-    public double calcularImpuesto(double monto) {
-      return 0.0;
-    }
-  };
+        @Override
+        public double calcularImpuesto(double monto) {
+          return 0.0;
+        }
+      };
 
   private Producto laptop;
   private Producto mouse;
@@ -57,8 +58,7 @@ class CarritoCompraTest {
     @Test
     @DisplayName("lanza excepción cuando servicioPrecio es nulo")
     void constructorServicioPrecioNulo() {
-      assertThrows(IllegalArgumentException.class,
-          () -> new CarritoCompra(null));
+      assertThrows(IllegalArgumentException.class, () -> new CarritoCompra(null));
     }
 
     @Test
@@ -99,29 +99,26 @@ class CarritoCompraTest {
     @Test
     @DisplayName("lanza excepción al agregar producto nulo")
     void agregarProductoNulo() {
-      assertThrows(IllegalArgumentException.class,
-          () -> carrito.agregarProducto(null, 1));
+      assertThrows(IllegalArgumentException.class, () -> carrito.agregarProducto(null, 1));
     }
 
     @Test
     @DisplayName("lanza excepción al agregar cantidad negativa")
     void agregarCantidadNegativa() {
-      assertThrows(IllegalArgumentException.class,
-          () -> carrito.agregarProducto(laptop, -1));
+      assertThrows(IllegalArgumentException.class, () -> carrito.agregarProducto(laptop, -1));
     }
 
     @Test
     @DisplayName("lanza excepción al agregar cantidad cero")
     void agregarCantidadCero() {
-      assertThrows(IllegalArgumentException.class,
-          () -> carrito.agregarProducto(laptop, 0));
+      assertThrows(IllegalArgumentException.class, () -> carrito.agregarProducto(laptop, 0));
     }
 
     @Test
     @DisplayName("lanza excepción al agregar producto no disponible")
     void agregarProductoNoDisponible() {
-      assertThrows(IllegalStateException.class,
-          () -> carrito.agregarProducto(productoNoDisponible, 1));
+      assertThrows(
+          IllegalStateException.class, () -> carrito.agregarProducto(productoNoDisponible, 1));
     }
 
     @Test
@@ -172,23 +169,20 @@ class CarritoCompraTest {
     @Test
     @DisplayName("lanza excepción al remover producto nulo")
     void removerProductoNulo() {
-      assertThrows(IllegalArgumentException.class,
-          () -> carrito.removerProducto(null, 1));
+      assertThrows(IllegalArgumentException.class, () -> carrito.removerProducto(null, 1));
     }
 
     @Test
     @DisplayName("lanza excepción al remover cantidad no positiva")
     void removerCantidadNoPositiva() {
       carrito.agregarProducto(laptop, 1);
-      assertThrows(IllegalArgumentException.class,
-          () -> carrito.removerProducto(laptop, 0));
+      assertThrows(IllegalArgumentException.class, () -> carrito.removerProducto(laptop, 0));
     }
 
     @Test
     @DisplayName("lanza excepción al remover producto inexistente")
     void removerProductoInexistente() {
-      assertThrows(IllegalStateException.class,
-          () -> carrito.removerProducto(laptop, 1));
+      assertThrows(IllegalStateException.class, () -> carrito.removerProducto(laptop, 1));
     }
   }
 
@@ -215,8 +209,8 @@ class CarritoCompraTest {
     @DisplayName("vaciar registra operación en historial")
     void vaciarRegistraHistorial() {
       carrito.vaciarCarrito();
-      String ultimaOp = carrito.getHistorialOperaciones()
-          .get(carrito.getHistorialOperaciones().size() - 1);
+      String ultimaOp =
+          carrito.getHistorialOperaciones().get(carrito.getHistorialOperaciones().size() - 1);
 
       assertTrue(ultimaOp.contains("vaciado"));
     }
@@ -284,8 +278,7 @@ class CarritoCompraTest {
       assertAll(
           () -> assertTrue(resumen.contains("Laptop")),
           () -> assertTrue(resumen.contains("TOTAL")),
-          () -> assertTrue(resumen.contains("Subtotal"))
-      );
+          () -> assertTrue(resumen.contains("Subtotal")));
     }
   }
 
@@ -305,8 +298,7 @@ class CarritoCompraTest {
       assertAll(
           () -> assertEquals(1, carrito.getItems().size()),
           () -> assertEquals(25.0, carrito.calcularSubtotal()),
-          () -> assertEquals(25.0, carrito.calcularTotal())
-      );
+          () -> assertEquals(25.0, carrito.calcularTotal()));
     }
 
     @Test
@@ -330,3 +322,4 @@ class CarritoCompraTest {
     }
   }
 }
+

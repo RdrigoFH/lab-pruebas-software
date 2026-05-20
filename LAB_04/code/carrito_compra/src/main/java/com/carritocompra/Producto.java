@@ -1,12 +1,12 @@
-package com.lab04;
+package com.carritocompra;
 
 import java.util.Objects;
 
 /**
  * Representa un producto disponible en la tienda en línea.
  *
- * <p>La igualdad entre productos se determina únicamente por su {@code id},
- * por lo que dos instancias con el mismo identificador se consideran el mismo producto.
+ * <p>La igualdad entre productos se determina únicamente por su {@code id}, por lo que dos
+ * instancias con el mismo identificador se consideran el mismo producto.
  */
 public class Producto {
 
@@ -40,22 +40,30 @@ public class Producto {
     this.disponible = disponible;
   }
 
-  /** @return identificador único del producto */
+  /**
+   * @return identificador único del producto
+   */
   public String getId() {
     return id;
   }
 
-  /** @return nombre descriptivo del producto */
+  /**
+   * @return nombre descriptivo del producto
+   */
   public String getNombre() {
     return nombre;
   }
 
-  /** @return precio unitario del producto */
+  /**
+   * @return precio unitario del producto
+   */
   public double getPrecio() {
     return precio;
   }
 
-  /** @return {@code true} si el producto está disponible para agregar al carrito */
+  /**
+   * @return {@code true} si el producto está disponible para agregar al carrito
+   */
   public boolean isDisponible() {
     return disponible;
   }
@@ -93,3 +101,4 @@ public class Producto {
         id, nombre, precio, disponible);
   }
 }
+

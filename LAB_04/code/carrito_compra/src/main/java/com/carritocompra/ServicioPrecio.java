@@ -1,11 +1,11 @@
-package com.lab04;
+package com.carritocompra;
 
 /**
  * Interfaz para servicios externos de cálculo de precios.
  *
- * <p>Define los contratos para aplicar descuentos e impuestos sobre un monto base.
- * Las implementaciones concretas (o mocks en tests) deben garantizar que los valores
- * retornados sean no negativos.
+ * <p>Define los contratos para aplicar descuentos e impuestos sobre un monto base. Las
+ * implementaciones concretas (o mocks en tests) deben garantizar que los valores retornados sean no
+ * negativos.
  */
 public interface ServicioPrecio {
 
@@ -25,3 +25,4 @@ public interface ServicioPrecio {
    */
   double calcularImpuesto(double monto);
 }
+

@@ -1,4 +1,4 @@
-package com.lab04;
+package com.carritocompra;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,15 +9,16 @@ import java.util.Optional;
 /**
  * Representa el carrito de compras de un cliente en la tienda en línea.
  *
- * <p>Permite agregar y remover productos, calcular totales aplicando descuentos e impuestos
- * a través de un {@link ServicioPrecio}, y obtener un resumen detallado de la compra.
- * Mantiene un historial inmutable de todas las operaciones realizadas.
+ * <p>Permite agregar y remover productos, calcular totales aplicando descuentos e impuestos a
+ * través de un {@link ServicioPrecio}, y obtener un resumen detallado de la compra. Mantiene un
+ * historial inmutable de todas las operaciones realizadas.
  *
  * <p>Invariantes:
+ *
  * <ul>
- *   <li>No se admiten productos nulos ni no disponibles.</li>
- *   <li>Las cantidades siempre son positivas.</li>
- *   <li>No existen ítems duplicados: agregar un producto ya existente suma su cantidad.</li>
+ *   <li>No se admiten productos nulos ni no disponibles.
+ *   <li>Las cantidades siempre son positivas.
+ *   <li>No existen ítems duplicados: agregar un producto ya existente suma su cantidad.
  * </ul>
  */
 public class CarritoCompra {
@@ -63,8 +64,8 @@ public class CarritoCompra {
   /**
    * Agrega un producto al carrito con la cantidad especificada.
    *
-   * <p>Si el producto ya existe en el carrito, su cantidad se incrementa en lugar de
-   * crear un ítem duplicado.
+   * <p>Si el producto ya existe en el carrito, su cantidad se incrementa en lugar de crear un ítem
+   * duplicado.
    *
    * @param producto producto a agregar, no puede ser nulo ni no disponible
    * @param cantidad cantidad a agregar, debe ser positiva
@@ -83,29 +84,29 @@ public class CarritoCompra {
           "No se puede agregar un producto no disponible: " + producto.getNombre());
     }
 
-    Optional<ItemCarrito> itemExistente = items.stream()
-        .filter(item -> item.getProducto().equals(producto))
-        .findFirst();
+    Optional<ItemCarrito> itemExistente =
+        items.stream().filter(item -> item.getProducto().equals(producto)).findFirst();
 
     if (itemExistente.isPresent()) {
       ItemCarrito item = itemExistente.get();
       int nuevaCantidad = item.getCantidad() + cantidad;
       item.setCantidad(nuevaCantidad);
-      registrarOperacion(String.format(
-          "Cantidad actualizada para %s: +%d (nueva cantidad: %d)",
-          producto.getNombre(), cantidad, nuevaCantidad));
+      registrarOperacion(
+          String.format(
+              "Cantidad actualizada para %s: +%d (nueva cantidad: %d)",
+              producto.getNombre(), cantidad, nuevaCantidad));
     } else {
       items.add(new ItemCarrito(producto, cantidad));
-      registrarOperacion(String.format(
-          "Producto agregado: %s x%d", producto.getNombre(), cantidad));
+      registrarOperacion(
+          String.format("Producto agregado: %s x%d", producto.getNombre(), cantidad));
     }
   }
 
   /**
    * Remueve una cantidad del producto indicado del carrito.
    *
-   * <p>Si la cantidad a remover es mayor o igual a la existente, el ítem se elimina
-   * completamente del carrito.
+   * <p>Si la cantidad a remover es mayor o igual a la existente, el ítem se elimina completamente
+   * del carrito.
    *
    * @param producto producto a remover, no puede ser nulo
    * @param cantidad cantidad a remover, debe ser positiva
@@ -120,9 +121,8 @@ public class CarritoCompra {
       throw new IllegalArgumentException("La cantidad a remover debe ser positiva");
     }
 
-    Optional<ItemCarrito> itemExistente = items.stream()
-        .filter(item -> item.getProducto().equals(producto))
-        .findFirst();
+    Optional<ItemCarrito> itemExistente =
+        items.stream().filter(item -> item.getProducto().equals(producto)).findFirst();
 
     if (itemExistente.isEmpty()) {
       throw new IllegalStateException(
@@ -138,9 +138,10 @@ public class CarritoCompra {
           String.format("Producto removido completamente: %s", producto.getNombre()));
     } else {
       item.setCantidad(nuevaCantidad);
-      registrarOperacion(String.format(
-          "Cantidad reducida para %s: -%d (nueva cantidad: %d)",
-          producto.getNombre(), cantidad, nuevaCantidad));
+      registrarOperacion(
+          String.format(
+              "Cantidad reducida para %s: -%d (nueva cantidad: %d)",
+              producto.getNombre(), cantidad, nuevaCantidad));
     }
   }
 
@@ -156,9 +157,7 @@ public class CarritoCompra {
    * @return subtotal del carrito; {@code 0.0} si está vacío
    */
   public double calcularSubtotal() {
-    return items.stream()
-        .mapToDouble(ItemCarrito::getSubtotal)
-        .sum();
+    return items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
   }
 
   /**
@@ -192,17 +191,18 @@ public class CarritoCompra {
     double impuesto = servicioPrecio.calcularImpuesto(subtotal);
     double total = (subtotal - descuento) + impuesto;
 
-    registrarOperacion(String.format(
-        "Total calculado: subtotal=%.2f, descuento=%.2f, impuesto=%.2f, total=%.2f",
-        subtotal, descuento, impuesto, total));
+    registrarOperacion(
+        String.format(
+            "Total calculado: subtotal=%.2f, descuento=%.2f, impuesto=%.2f, total=%.2f",
+            subtotal, descuento, impuesto, total));
     return total;
   }
 
   /**
    * Genera un resumen legible de la compra con el desglose de precios.
    *
-   * <p>Llama a {@link ServicioPrecio} una única vez por concepto para evitar
-   * efectos secundarios no deseados ni entradas espurias en el historial.
+   * <p>Llama a {@link ServicioPrecio} una única vez por concepto para evitar efectos secundarios no
+   * deseados ni entradas espurias en el historial.
    *
    * @return cadena con el resumen; mensaje especial si el carrito está vacío
    */
@@ -221,12 +221,13 @@ public class CarritoCompra {
     sb.append("Productos:\n");
 
     for (ItemCarrito item : items) {
-      sb.append(String.format(
-          "  - %s: %d x $%.2f = $%.2f\n",
-          item.getProducto().getNombre(),
-          item.getCantidad(),
-          item.getProducto().getPrecio(),
-          item.getSubtotal()));
+      sb.append(
+          String.format(
+              "  - %s: %d x $%.2f = $%.2f\n",
+              item.getProducto().getNombre(),
+              item.getCantidad(),
+              item.getProducto().getPrecio(),
+              item.getSubtotal()));
     }
 
     sb.append(String.format("%nSubtotal: $%.2f%n", subtotal));
@@ -243,9 +244,7 @@ public class CarritoCompra {
    * @return cantidad total de productos
    */
   public int getCantidadTotalProductos() {
-    return items.stream()
-        .mapToInt(ItemCarrito::getCantidad)
-        .sum();
+    return items.stream().mapToInt(ItemCarrito::getCantidad).sum();
   }
 
   /**
@@ -255,8 +254,7 @@ public class CarritoCompra {
    * @return {@code true} si el producto está en el carrito
    */
   public boolean contieneProducto(Producto producto) {
-    return items.stream()
-        .anyMatch(item -> item.getProducto().equals(producto));
+    return items.stream().anyMatch(item -> item.getProducto().equals(producto));
   }
 
   /**
@@ -265,7 +263,7 @@ public class CarritoCompra {
    * @param operacion descripción de la operación realizada
    */
   private void registrarOperacion(String operacion) {
-    historialOperaciones.add(
-        String.format("[%s] %s", LocalDateTime.now(), operacion));
+    historialOperaciones.add(String.format("[%s] %s", LocalDateTime.now(), operacion));
   }
 }
+

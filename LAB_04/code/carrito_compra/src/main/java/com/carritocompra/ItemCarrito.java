@@ -1,13 +1,13 @@
-package com.lab04;
+package com.carritocompra;
 
 import java.time.LocalDateTime;
 
 /**
  * Representa un ítem dentro del carrito de compras.
  *
- * <p>Agrupa un {@link Producto} con su cantidad y registra el momento en que fue agregado.
- * La validación de disponibilidad del producto es responsabilidad de {@link CarritoCompra};
- * este clase solo garantiza que los valores propios (cantidad) sean válidos.
+ * <p>Agrupa un {@link Producto} con su cantidad y registra el momento en que fue agregado. La
+ * validación de disponibilidad del producto es responsabilidad de {@link CarritoCompra}; este clase
+ * solo garantiza que los valores propios (cantidad) sean válidos.
  */
 public class ItemCarrito {
 
@@ -34,17 +34,23 @@ public class ItemCarrito {
     this.fechaAgregado = LocalDateTime.now();
   }
 
-  /** @return el producto asociado a este ítem */
+  /**
+   * @return el producto asociado a este ítem
+   */
   public Producto getProducto() {
     return producto;
   }
 
-  /** @return la cantidad actual de este ítem */
+  /**
+   * @return la cantidad actual de este ítem
+   */
   public int getCantidad() {
     return cantidad;
   }
 
-  /** @return la fecha y hora en que se agregó este ítem al carrito */
+  /**
+   * @return la fecha y hora en que se agregó este ítem al carrito
+   */
   public LocalDateTime getFechaAgregado() {
     return fechaAgregado;
   }
@@ -62,7 +68,9 @@ public class ItemCarrito {
     this.cantidad = cantidad;
   }
 
-  /** @return el precio total de este ítem (precio unitario × cantidad) */
+  /**
+   * @return el precio total de este ítem (precio unitario × cantidad)
+   */
   public double getSubtotal() {
     return producto.getPrecio() * cantidad;
   }
@@ -74,3 +82,4 @@ public class ItemCarrito {
         producto.getNombre(), cantidad, getSubtotal());
   }
 }
+

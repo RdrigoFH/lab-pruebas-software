@@ -39,8 +39,8 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>Main/java</sourceDirectory>
-    <testSourceDirectory>Test/java</testSourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
 
     <plugins>
       <!-- Surefire: ejecuta tests JUnit 5 -->
