@@ -6,8 +6,8 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.lab04</groupId>
-  <artifactId>propuesto02-carrito</artifactId>
+  <groupId>com.carritocompra</groupId>
+  <artifactId>carrito_compra</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
