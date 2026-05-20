@@ -25,7 +25,7 @@ import org.junit.jupiter.params.provider.ValueSource;
  * texto según lo definido en su constructor.
  */
 @DisplayName("Producto Construcción y validación de atributos")
-class ProductoconstructorTest {
+class ProductoConstructorTest {
 
   // Constantes de prueba, valores canónicos reutilizados en toda la clase
 
