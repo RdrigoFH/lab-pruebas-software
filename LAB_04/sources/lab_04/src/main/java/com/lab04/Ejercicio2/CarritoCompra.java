@@ -1,5 +1,5 @@
 package main.java.com.lab04.Ejercicio2;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,15 +7,14 @@ public class CarritoCompra {
     private List<ItemCarrito> items;
     private ServicioPrecio servicioPrecio;
     private double total;
-    private String historialOperaciones;
-    private static final double INTERES = 0.18;
-    private static final double DESCUENTO = 0.10;
+    private List<String> historialOperaciones;
 
     public CarritoCompra(int capacidad, ServicioPrecio servicioPrecio) {
         this.items = new ArrayList<>();
         this.servicioPrecio = servicioPrecio;
         this.total = 0.0;
-        this.historialOperaciones = "Historial de operaciones:\n";
+        this.historialOperaciones = new ArrayList<>();
+        registrarOperacion("HISTORIAL DE OPERACIONES:");
     }
     public void agregarProducto(Producto producto, int cantidad) {
         try {
@@ -29,7 +28,7 @@ public class CarritoCompra {
 
         ItemCarrito item = new ItemCarrito(producto, cantidad);
         this.items.add(item);
-        this.historialOperaciones += "- Se agrego " + cantidad + " de " + producto.getNombre() + "\n";
+        registrarOperacion("Se agrego " + cantidad + " de " + producto.getNombre());
     }
 
     private void cantidadValida(int cantidad) {
@@ -51,8 +50,7 @@ public class CarritoCompra {
                 break;
             }
         }
-        
-        this.historialOperaciones += "- Se actualizo la cantidad de " + producto.getNombre() + " a " + nuevaCantidad + "\n";
+        registrarOperacion("Se actualizo la cantidad de " + producto.getNombre() + " a " + nuevaCantidad);
     }
     private void esDuplicado(Producto producto) {
         for (ItemCarrito item : items) {
@@ -63,18 +61,18 @@ public class CarritoCompra {
     }
     public void eliminarProducto(Producto producto) {
         items.removeIf(item -> item.getProducto().getId() == producto.getId());
-        this.historialOperaciones += "- Se elimino " + producto.getNombre() + "\n";
+        registrarOperacion("Se elimino " + producto.getNombre());
     }
 
     public void vaciarCarrito() {
         this.items.clear();
-        this.historialOperaciones += "- Se vacio el carrito\n";
+        registrarOperacion("Se vacio el carrito");
     }
 
     public double calcularPrecioProductos() {
         double total = 0.0;
         for (ItemCarrito item : items) {
-            total += item.getProducto().getPrecio() * item.getCantidad();
+            total += item.getSubtotal();
         }
         return total;
     }
@@ -85,18 +83,18 @@ public class CarritoCompra {
         double impuesto = servicioPrecio.calcularImpuesto(precioFinal);
         total = precioFinal + impuesto;
 
-        this.historialOperaciones += "- Se calculo el precio total: " + total + "\n";
+        registrarOperacion("Se calculo el precio total: " + total);
         return total;
     }
     public void obtenerResumenCompra(){
         System.out.println("Resumen de productos:");
         for (ItemCarrito item : items) {
-            System.out.println("Producto: " + item.getProducto().getNombre() + ", Cantidad: " + item.getCantidad() + ", Precio: " + item.getProducto().getPrecio());
+            System.out.println("- Producto: " + item.getProducto().getNombre() + ", Cantidad: " + item.getCantidad() + ", Precio: " + item.getProducto().getPrecio() + "\n");
         }
-        this.historialOperaciones += "- Se obtuvo el resumen de productos\n";
+        registrarOperacion("Se obtuvo el resumen de productos");
     }
 
-    public String getHistorialOperaciones() {
+    public List<String> getHistorialOperaciones() {
         return historialOperaciones;
     }
 
@@ -106,6 +104,10 @@ public class CarritoCompra {
 
     public double calcularImpuesto() {
         return servicioPrecio.calcularImpuesto(calcularSubtotal());
+    }
+
+    private void registrarOperacion(String operacion) {
+        this.historialOperaciones.add(LocalDateTime.now() + ": " + operacion + "\n");
     }
 
 }

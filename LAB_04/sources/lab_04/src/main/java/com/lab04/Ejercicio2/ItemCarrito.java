@@ -1,17 +1,13 @@
 package main.java.com.lab04.Ejercicio2;
 
-import java.time.LocalDateTime;
-
 public class ItemCarrito {
     private Producto producto;
     private int cantidad;
-    private final LocalDateTime fecha;
 
 
     public ItemCarrito(Producto producto, int cantidad) {
         this.producto = producto;
         this.cantidad = cantidad;
-        this.fecha = LocalDateTime.now();
     }
 
     public Producto getProducto() {
@@ -30,7 +26,7 @@ public class ItemCarrito {
         return fecha;
     }
 
-    public double calcularSubtotalProducto() {
+    public double calcularSubtotal() {
         return producto.getPrecio() * cantidad;
     }
 }
