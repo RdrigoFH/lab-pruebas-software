@@ -1,6 +1,5 @@
 package com.gestorinventario;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -216,30 +215,6 @@ class ProductoOperacionesTest {
 
       // Assert
       assertEquals(0.0, valorTotal, 0.001);
-    }
-  }
-
-  // MÉTODOS DE VALIDACIÓN INTERNA (Estado de invariantes)
-
-  @Nested
-  @DisplayName("4. Métodos de estado: codigoValido(), precioValido(), cantidadValida()")
-  class EstadoValidacionContinua {
-
-    /**
-     * Dado que el constructor garantiza el estado válido inicial y los métodos de operación están
-     * blindados, estos validadores booleanos deben retornar true de manera consistente. Sirve para
-     * documentar la garantía de invariabilidad del objeto en memoria.
-     */
-    @Test
-    @DisplayName("Un producto exitosamente construido reporta estado válido en todos sus campos")
-    void dadoProductoConstruido_entoncesValidadoresInternosSonVerdaderos() {
-      assertAll(
-          "Las validaciones internas siempre deben certificar la salud del objeto",
-          () -> assertTrue(producto.codigoValido(), "El código debería ser reportado como válido"),
-          () -> assertTrue(producto.precioValido(), "El precio debería ser reportado como válido"),
-          () ->
-              assertTrue(
-                  producto.cantidadValida(), "La cantidad debería ser reportada como válida"));
     }
   }
 

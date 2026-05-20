@@ -113,18 +113,6 @@ public class Producto {
     return precio * cantidad;
   }
 
-  public boolean codigoValido() {
-    return codigo != null && !codigo.trim().isEmpty();
-  }
-
-  public boolean precioValido() {
-    return precio > 0;
-  }
-
-  public boolean cantidadValida() {
-    return cantidad >= 0;
-  }
-
   public List<Movimiento> obtenerHistorial() {
     return Collections.unmodifiableList(new ArrayList<>(historial));
   }
