@@ -10,27 +10,44 @@ public class CarritoCompra {
     private List<String> historialOperaciones;
 
     public CarritoCompra(int capacidad, ServicioPrecio servicioPrecio) {
+        if (servicioPrecio == null) {
+            throw new IllegalArgumentException("El servicio de precios no puede ser nulo");
+        }
         this.items = new ArrayList<>();
         this.servicioPrecio = servicioPrecio;
         this.total = 0.0;
         this.historialOperaciones = new ArrayList<>();
         registrarOperacion("HISTORIAL DE OPERACIONES:");
     }
+
+    //Getters
+    public List<String> getHistorialOperaciones() {
+        return historialOperaciones;
+    }
+
+    public List<ItemCarrito> getItems() {
+        return items;
+    }
+    //Metodos
+
     public void agregarProducto(Producto producto, int cantidad) {
         try {
+            validarProductoNoNulo(producto);
             cantidadValida(cantidad);
             productoDisponible(producto);
             esDuplicado(producto);
+
+            ItemCarrito item = new ItemCarrito(producto, cantidad);
+            this.items.add(item);
+            registrarOperacion("Se agrego " + cantidad + " de " + producto.getNombre());
+
         } catch (IllegalArgumentException | IllegalStateException e) {
             System.out.println("Error al agregar producto: " + e.getMessage());
             return;
         }
-
-        ItemCarrito item = new ItemCarrito(producto, cantidad);
-        this.items.add(item);
-        registrarOperacion("Se agrego " + cantidad + " de " + producto.getNombre());
     }
 
+    // Validaciones
     private void cantidadValida(int cantidad) {
         if (cantidad <= 0) {
                 throw new IllegalArgumentException("La cantidad tiene que ser mayor a cero");
@@ -52,6 +69,7 @@ public class CarritoCompra {
         }
         registrarOperacion("Se actualizo la cantidad de " + producto.getNombre() + " a " + nuevaCantidad);
     }
+
     private void esDuplicado(Producto producto) {
         for (ItemCarrito item : items) {
             if (item.getProducto().getId() == producto.getId()) {
@@ -59,9 +77,22 @@ public class CarritoCompra {
             }
         }
     }
-    public void eliminarProducto(Producto producto) {
-        items.removeIf(item -> item.getProducto().getId() == producto.getId());
-        registrarOperacion("Se elimino " + producto.getNombre());
+
+    private void validarProductoNoNulo(Producto producto) {
+        if (producto == null) {
+            throw new IllegalArgumentException("El producto no puede ser nulo");
+        }
+    }
+
+    public void removerProducto(Producto producto) {
+        validarProductoNoNulo(producto);
+        boolean seElimino = items.removeIf(item -> item.getProducto().getId() == producto.getId());
+    
+        if (seElimino) {
+            registrarOperacion("Se elimino " + producto.getNombre());
+        } else {
+            registrarOperacion("El producto no se encontro en el carrito");
+        }
     }
 
     public void vaciarCarrito() {
@@ -94,9 +125,6 @@ public class CarritoCompra {
         registrarOperacion("Se obtuvo el resumen de productos");
     }
 
-    public List<String> getHistorialOperaciones() {
-        return historialOperaciones;
-    }
 
     public double calcularDescuento() {
         return servicioPrecio.calcularDescuento(calcularSubtotal());
