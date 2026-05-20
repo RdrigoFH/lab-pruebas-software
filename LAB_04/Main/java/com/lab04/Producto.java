@@ -3,14 +3,27 @@ package com.lab04;
 import java.util.Objects;
 
 /**
- * Representa un producto disponible en la tienda.
+ * Representa un producto disponible en la tienda en línea.
+ *
+ * <p>La igualdad entre productos se determina únicamente por su {@code id},
+ * por lo que dos instancias con el mismo identificador se consideran el mismo producto.
  */
 public class Producto {
+
   private final String id;
   private final String nombre;
   private final double precio;
   private boolean disponible;
 
+  /**
+   * Construye un nuevo producto.
+   *
+   * @param id identificador único, no nulo ni vacío
+   * @param nombre nombre descriptivo, no nulo ni vacío
+   * @param precio precio unitario, debe ser positivo
+   * @param disponible {@code true} si el producto tiene stock
+   * @throws IllegalArgumentException si id, nombre o precio son inválidos
+   */
   public Producto(String id, String nombre, double precio, boolean disponible) {
     if (id == null || id.trim().isEmpty()) {
       throw new IllegalArgumentException("El ID del producto no puede estar vacío");
@@ -27,22 +40,31 @@ public class Producto {
     this.disponible = disponible;
   }
 
+  /** @return identificador único del producto */
   public String getId() {
     return id;
   }
 
+  /** @return nombre descriptivo del producto */
   public String getNombre() {
     return nombre;
   }
 
+  /** @return precio unitario del producto */
   public double getPrecio() {
     return precio;
   }
 
+  /** @return {@code true} si el producto está disponible para agregar al carrito */
   public boolean isDisponible() {
     return disponible;
   }
 
+  /**
+   * Actualiza la disponibilidad del producto.
+   *
+   * @param disponible nuevo estado de disponibilidad
+   */
   public void setDisponible(boolean disponible) {
     this.disponible = disponible;
   }
