@@ -42,9 +42,62 @@ public class CarritoCompra {
             registrarOperacion("Se agrego " + cantidad + " de " + producto.getNombre());
 
         } catch (IllegalArgumentException | IllegalStateException e) {
-            System.out.println("Error al agregar producto: " + e.getMessage());
+            registrarOperacion("Error al agregar producto: " + e.getMessage());
             return;
         }
+    }
+
+    public void removerProducto(Producto producto) {
+        validarProductoNoNulo(producto);
+        boolean seElimino = items.removeIf(item -> item.getProducto().getId() == producto.getId());
+    
+        if (seElimino) {
+            registrarOperacion("Se elimino " + producto.getNombre());
+        } else {
+            registrarOperacion("El producto no se encontro en el carrito");
+        }
+    }
+
+    public void vaciarCarrito() {
+        this.items.clear();
+        registrarOperacion("Se vacio el carrito");
+    }
+
+    public double calcularPrecioProductos() {
+        double total = 0.0;
+        for (ItemCarrito item : items) {
+            total += item.getSubtotal();
+        }
+        return total;
+    }
+    public double calcularPrecioTotal() {
+        double precioProductos = calcularPrecioProductos();
+        double descuento = this.servicioPrecio.calcularDescuento(precioProductos);
+        double precioFinal = precioProductos - descuento;
+        double impuesto = servicioPrecio.calcularImpuesto(precioProductos);
+        total = precioFinal + impuesto;
+
+        registrarOperacion("Se calculo el precio total: " + total);
+        return total;
+    }
+    public void obtenerResumenCompra(){
+        System.out.println("Resumen de productos:");
+        for (ItemCarrito item : items) {
+            System.out.println("- Producto: " + item.getProducto().getNombre() + ", Cantidad: " + item.getCantidad() + ", Precio: " + item.getProducto().getPrecio() + "\n");
+        }
+        registrarOperacion("Se obtuvo el resumen de productos");
+    }
+
+    public double calcularDescuento() {
+        return servicioPrecio.calcularDescuento(calcularSubtotal());
+    }
+
+    public double calcularImpuesto() {
+        return servicioPrecio.calcularImpuesto(calcularSubtotal());
+    }
+
+    private void registrarOperacion(String operacion) {
+        this.historialOperaciones.add(LocalDateTime.now() + ": " + operacion + "\n");
     }
 
     // Validaciones
@@ -82,60 +135,6 @@ public class CarritoCompra {
         if (producto == null) {
             throw new IllegalArgumentException("El producto no puede ser nulo");
         }
-    }
-
-    public void removerProducto(Producto producto) {
-        validarProductoNoNulo(producto);
-        boolean seElimino = items.removeIf(item -> item.getProducto().getId() == producto.getId());
-    
-        if (seElimino) {
-            registrarOperacion("Se elimino " + producto.getNombre());
-        } else {
-            registrarOperacion("El producto no se encontro en el carrito");
-        }
-    }
-
-    public void vaciarCarrito() {
-        this.items.clear();
-        registrarOperacion("Se vacio el carrito");
-    }
-
-    public double calcularPrecioProductos() {
-        double total = 0.0;
-        for (ItemCarrito item : items) {
-            total += item.getSubtotal();
-        }
-        return total;
-    }
-    public double calcularPrecioTotal() {
-        double precioProductos = calcularPrecioProductos();
-        double descuento = this.servicioPrecio.calcularDescuento(precioProductos);
-        double precioFinal = precioProductos - descuento;
-        double impuesto = servicioPrecio.calcularImpuesto(precioFinal);
-        total = precioFinal + impuesto;
-
-        registrarOperacion("Se calculo el precio total: " + total);
-        return total;
-    }
-    public void obtenerResumenCompra(){
-        System.out.println("Resumen de productos:");
-        for (ItemCarrito item : items) {
-            System.out.println("- Producto: " + item.getProducto().getNombre() + ", Cantidad: " + item.getCantidad() + ", Precio: " + item.getProducto().getPrecio() + "\n");
-        }
-        registrarOperacion("Se obtuvo el resumen de productos");
-    }
-
-
-    public double calcularDescuento() {
-        return servicioPrecio.calcularDescuento(calcularSubtotal());
-    }
-
-    public double calcularImpuesto() {
-        return servicioPrecio.calcularImpuesto(calcularSubtotal());
-    }
-
-    private void registrarOperacion(String operacion) {
-        this.historialOperaciones.add(LocalDateTime.now() + ": " + operacion + "\n");
     }
 
 }
