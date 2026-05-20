@@ -1,6 +1,7 @@
 package com.gestorinventario;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Producto {
@@ -8,8 +9,10 @@ public class Producto {
   private String nombre;
   private double precio;
   private int cantidad;
+  private final List<Movimiento> historial;
 
   public Producto(String codigo, String nombre, String precio, String cantidad) {
+    this.historial = new ArrayList<>();
     setCodigo(codigo);
     setNombre(nombre);
     setPrecio(precio);
@@ -77,7 +80,12 @@ public class Producto {
       throw new IllegalArgumentException("La cantidad a agregar no puede ser negativa");
     }
 
+    if (cantidad == 0) {
+      return;
+    }
+
     this.cantidad += cantidad;
+    historial.add(new Movimiento(TipoMovimiento.ENTRADA, cantidad));
   }
 
   public void extraerStock(int cantidad) {
@@ -89,7 +97,12 @@ public class Producto {
       throw new IllegalArgumentException("El stock no puede quedar en negativo");
     }
 
+    if (cantidad == 0) {
+      return;
+    }
+
     this.cantidad -= cantidad;
+    historial.add(new Movimiento(TipoMovimiento.SALIDA, cantidad));
   }
 
   public int consultarStock() {
@@ -113,7 +126,7 @@ public class Producto {
   }
 
   public List<Movimiento> obtenerHistorial() {
-    return new ArrayList<Movimiento>();
+    return Collections.unmodifiableList(new ArrayList<>(historial));
   }
 }
 
