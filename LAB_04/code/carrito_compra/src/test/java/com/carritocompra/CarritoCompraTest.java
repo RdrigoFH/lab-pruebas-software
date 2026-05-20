@@ -87,13 +87,17 @@ class CarritoCompraTest {
     }
 
     @Test
-    @DisplayName("acumula cantidad al agregar producto duplicado")
-    void agregarProductoDuplicadoAcumulaCantidad() {
-      carrito.agregarProducto(laptop, 2);
-      carrito.agregarProducto(laptop, 3);
+    @DisplayName("lanza excepción al agregar producto duplicado")
+    void agregarProductoDuplicadoNoSeAgrega() {
+        carrito.agregarProducto(laptop, 2);
 
-      assertEquals(1, carrito.getItems().size());
-      assertEquals(5, carrito.getItems().get(0).getCantidad());
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> carrito.agregarProducto(laptop, 3)
+        );
+
+        assertEquals(1, carrito.getItems().size());
+        assertEquals(2, carrito.getItems().get(0).getCantidad());
     }
 
     @Test
@@ -212,7 +216,7 @@ class CarritoCompraTest {
       String ultimaOp =
           carrito.getHistorialOperaciones().get(carrito.getHistorialOperaciones().size() - 1);
 
-      assertTrue(ultimaOp.contains("vaciado"));
+      assertTrue(ultimaOp.contains("Se vacio el carrito"));
     }
   }
 

@@ -1,0 +1,15 @@
+com\carritocompra\CarritoCompraMockTest$CalculoDescuento.class
+com\carritocompra\CarritoCompraTest$ResumenCompra.class
+com\carritocompra\CarritoCompraMockTest$CalculoTotal.class
+com\carritocompra\CarritoCompraParametrizadoTest.class
+com\carritocompra\CarritoCompraTest$CasosLimite.class
+com\carritocompra\CarritoCompraTest$1.class
+com\carritocompra\CarritoCompraTest$VaciarCarrito.class
+com\carritocompra\CarritoCompraMockTest$VerificacionLlamadas.class
+com\carritocompra\CarritoCompraTest$Construccion.class
+com\carritocompra\CarritoCompraTest.class
+com\carritocompra\CarritoCompraTest$CalculosTotales.class
+com\carritocompra\CarritoCompraTest$AgregarProductos.class
+com\carritocompra\CarritoCompraMockTest.class
+com\carritocompra\CarritoCompraTest$RemoverProductos.class
+com\carritocompra\CarritoCompraMockTest$CalculoImpuesto.class

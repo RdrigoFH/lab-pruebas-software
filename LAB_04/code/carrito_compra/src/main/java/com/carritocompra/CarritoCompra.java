@@ -3,8 +3,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.com.lab04.Ejercicio2.Producto;
-
 public class CarritoCompra {
     private List<ItemCarrito> items;
     private ServicioPrecio servicioPrecio;
@@ -41,22 +39,17 @@ public class CarritoCompra {
     //Metodos
 
     public void agregarProducto(Producto producto, int cantidad) {
-        try {
-            validarProductoNoNulo(producto);
-            cantidadValida(cantidad);
-            productoDisponible(producto);
-            if (contieneProducto(producto)){
-                throw new IllegalArgumentException("El producto ya esta en el carrito");
-            }
+        validarProductoNoNulo(producto);
+        cantidadValida(cantidad);
+        productoDisponible(producto);
 
-            ItemCarrito item = new ItemCarrito(producto, cantidad);
-            this.items.add(item);
-            registrarOperacion("Se agrego " + cantidad + " de " + producto.getNombre());
-
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            registrarOperacion("Error al agregar producto: " + e.getMessage());
-            return;
+        if (contieneProducto(producto)) {
+            throw new IllegalArgumentException("El producto ya esta en el carrito");
         }
+
+        ItemCarrito item = new ItemCarrito(producto, cantidad);
+        this.items.add(item);
+        registrarOperacion("Se agrego " + cantidad + " de " + producto.getNombre());
     }
 
     public void removerProducto(Producto producto) {
@@ -143,7 +136,7 @@ public class CarritoCompra {
         }
         return false;
     }
-    }
+    
 
     private void validarProductoNoNulo(Producto producto) {
         if (producto == null) {

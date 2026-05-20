@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Producto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">carrito_compra</a> &gt; <a href="index.source.html" class="el_package">com.carritocompra</a> &gt; <span class="el_source">Producto.java</span></div><h1>Producto.java</h1><pre class="source lang-java linenums">package com.carritocompra;
+
+public class Producto {
+
+    private String id;
+    private String nombre;
+    private double precio;
+    private boolean disponibilidad;
+
+<span class="fc" id="L10">    public Producto(String id, String nombre, double precio, boolean disponibilidad) {</span>
+<span class="pc bpc" id="L11" title="2 of 4 branches missed.">        if (id == null || id.trim().isEmpty()) {</span>
+<span class="nc" id="L12">            throw new IllegalArgumentException(&quot;El ID del producto no puede estar vacío&quot;);</span>
+        }
+<span class="pc bpc" id="L14" title="2 of 4 branches missed.">        if (nombre == null || nombre.trim().isEmpty()) {</span>
+<span class="nc" id="L15">            throw new IllegalArgumentException(&quot;El nombre del producto no puede estar vacío&quot;);</span>
+        }
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if (precio &lt;= 0) {</span>
+<span class="nc" id="L18">            throw new IllegalArgumentException(&quot;El precio debe ser positivo&quot;);</span>
+        }
+<span class="fc" id="L20">        this.id = id;</span>
+<span class="fc" id="L21">        this.nombre = nombre;</span>
+<span class="fc" id="L22">        this.precio = precio;</span>
+<span class="fc" id="L23">        this.disponibilidad = disponibilidad;</span>
+<span class="fc" id="L24">    }</span>
+
+    public String getId() {
+<span class="fc" id="L27">        return id;</span>
+    }
+    public double getPrecio() {
+<span class="fc" id="L30">        return precio;</span>
+    }
+    public boolean getDisponibilidad() {
+<span class="fc" id="L33">        return disponibilidad;</span>
+    }
+    public String getNombre() {
+<span class="fc" id="L36">        return nombre;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.14.202510111229</span></div></body></html>

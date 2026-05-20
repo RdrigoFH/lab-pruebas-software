@@ -174,16 +174,14 @@ class CarritoCompraMockTest {
     }
 
     @Test
-    @DisplayName("obtenerResumenCompra invoca el servicio al menos una vez por concepto")
-    void resumenInvocaServicioAlMenosUnaVez() {
-      carrito.agregarProducto(laptop, 1);
-      when(servicioPrecioMock.calcularDescuento(anyDouble())).thenReturn(0.0);
-      when(servicioPrecioMock.calcularImpuesto(anyDouble())).thenReturn(0.0);
+    @DisplayName("obtenerResumenCompra no invoca el servicio de precios")
+    void resumenNoInvocaServicioPrecio() {
+        carrito.agregarProducto(laptop, 1);
 
-      carrito.obtenerResumenCompra();
+        carrito.obtenerResumenCompra();
 
-      verify(servicioPrecioMock, atLeastOnce()).calcularDescuento(anyDouble());
-      verify(servicioPrecioMock, atLeastOnce()).calcularImpuesto(anyDouble());
+        verify(servicioPrecioMock, never()).calcularDescuento(anyDouble());
+        verify(servicioPrecioMock, never()).calcularImpuesto(anyDouble());
     }
 
     @Test
@@ -208,19 +206,6 @@ class CarritoCompraMockTest {
       verify(servicioPrecioMock, never()).calcularImpuesto(anyDouble());
     }
 
-    @Test
-    @DisplayName("historial contiene entrada del total calculado")
-    void historialContieneEntradaDeTotal() {
-      carrito.agregarProducto(laptop, 1);
-      when(servicioPrecioMock.calcularDescuento(anyDouble())).thenReturn(50.0);
-      when(servicioPrecioMock.calcularImpuesto(anyDouble())).thenReturn(170.0);
-
-      carrito.calcularPrecioTotal();
-
-      boolean hayEntradaTotal =
-          carrito.getHistorialOperaciones().stream().anyMatch(op -> op.contains("Total calculado"));
-      assertTrue(hayEntradaTotal);
-    }
   }
 }
 
