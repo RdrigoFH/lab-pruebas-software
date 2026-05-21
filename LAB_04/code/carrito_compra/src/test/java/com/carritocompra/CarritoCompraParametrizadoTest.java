@@ -61,7 +61,7 @@ class CarritoCompraParametrizadoTest {
     when(servicioPrecioMock.calcularDescuento(subtotal)).thenReturn(descuento);
     when(servicioPrecioMock.calcularImpuesto(subtotal)).thenReturn(impuesto);
 
-    assertEquals(totalEsperado, carrito.calcularTotal(), 0.001);
+    assertEquals(totalEsperado, carrito.calcularPrecioTotal(), 0.001);
   }
 
   /**
@@ -81,7 +81,7 @@ class CarritoCompraParametrizadoTest {
     Producto producto = new Producto("PTEST", "Producto Test", precio, true);
     carrito.agregarProducto(producto, cantidad);
 
-    assertEquals(subtotalEsperado, carrito.calcularSubtotal(), 0.001);
+    assertEquals(subtotalEsperado, carrito.calcularPrecioProductos(), 0.001);
   }
 }
 

@@ -106,7 +106,7 @@ class CarritoCompraMockTest {
       when(servicioPrecioMock.calcularDescuento(1000.0)).thenReturn(100.0);
       when(servicioPrecioMock.calcularImpuesto(1000.0)).thenReturn(180.0);
 
-      double total = carrito.calcularTotal();
+      double total = carrito.calcularPrecioTotal();
 
       assertEquals(1080.0, total, 0.001);
     }
@@ -117,7 +117,7 @@ class CarritoCompraMockTest {
       when(servicioPrecioMock.calcularDescuento(0.0)).thenReturn(0.0);
       when(servicioPrecioMock.calcularImpuesto(0.0)).thenReturn(0.0);
 
-      assertEquals(0.0, carrito.calcularTotal());
+      assertEquals(0.0, carrito.calcularPrecioTotal());
     }
 
     @Test
@@ -127,7 +127,7 @@ class CarritoCompraMockTest {
       when(servicioPrecioMock.calcularDescuento(100.0)).thenReturn(0.0);
       when(servicioPrecioMock.calcularImpuesto(100.0)).thenReturn(18.0);
 
-      assertEquals(118.0, carrito.calcularTotal(), 0.001);
+      assertEquals(118.0, carrito.calcularPrecioTotal(), 0.001);
     }
 
     @Test
@@ -137,7 +137,7 @@ class CarritoCompraMockTest {
       when(servicioPrecioMock.calcularDescuento(100.0)).thenReturn(10.0);
       when(servicioPrecioMock.calcularImpuesto(100.0)).thenReturn(0.0);
 
-      assertEquals(90.0, carrito.calcularTotal(), 0.001);
+      assertEquals(90.0, carrito.calcularPrecioTotal(), 0.001);
     }
   }
 
@@ -156,7 +156,7 @@ class CarritoCompraMockTest {
       when(servicioPrecioMock.calcularDescuento(anyDouble())).thenReturn(0.0);
       when(servicioPrecioMock.calcularImpuesto(anyDouble())).thenReturn(0.0);
 
-      carrito.calcularTotal();
+      carrito.calcularPrecioTotal();
 
       verify(servicioPrecioMock, times(1)).calcularDescuento(1000.0);
     }
@@ -168,22 +168,20 @@ class CarritoCompraMockTest {
       when(servicioPrecioMock.calcularDescuento(anyDouble())).thenReturn(0.0);
       when(servicioPrecioMock.calcularImpuesto(anyDouble())).thenReturn(0.0);
 
-      carrito.calcularTotal();
+      carrito.calcularPrecioTotal();
 
       verify(servicioPrecioMock, times(1)).calcularImpuesto(1000.0);
     }
 
     @Test
-    @DisplayName("obtenerResumenCompra invoca el servicio al menos una vez por concepto")
-    void resumenInvocaServicioAlMenosUnaVez() {
-      carrito.agregarProducto(laptop, 1);
-      when(servicioPrecioMock.calcularDescuento(anyDouble())).thenReturn(0.0);
-      when(servicioPrecioMock.calcularImpuesto(anyDouble())).thenReturn(0.0);
+    @DisplayName("obtenerResumenCompra no invoca el servicio de precios")
+    void resumenNoInvocaServicioPrecio() {
+        carrito.agregarProducto(laptop, 1);
 
-      carrito.obtenerResumenCompra();
+        carrito.obtenerResumenCompra();
 
-      verify(servicioPrecioMock, atLeastOnce()).calcularDescuento(anyDouble());
-      verify(servicioPrecioMock, atLeastOnce()).calcularImpuesto(anyDouble());
+        verify(servicioPrecioMock, never()).calcularDescuento(anyDouble());
+        verify(servicioPrecioMock, never()).calcularImpuesto(anyDouble());
     }
 
     @Test
@@ -193,7 +191,7 @@ class CarritoCompraMockTest {
       when(servicioPrecioMock.calcularDescuento(0.0)).thenReturn(0.0);
       when(servicioPrecioMock.calcularImpuesto(0.0)).thenReturn(0.0);
 
-      carrito.calcularTotal();
+      carrito.calcularPrecioTotal();
 
       verify(servicioPrecioMock, never()).calcularDescuento(1000.0);
       verify(servicioPrecioMock, never()).calcularImpuesto(1000.0);
@@ -208,19 +206,6 @@ class CarritoCompraMockTest {
       verify(servicioPrecioMock, never()).calcularImpuesto(anyDouble());
     }
 
-    @Test
-    @DisplayName("historial contiene entrada del total calculado")
-    void historialContieneEntradaDeTotal() {
-      carrito.agregarProducto(laptop, 1);
-      when(servicioPrecioMock.calcularDescuento(anyDouble())).thenReturn(50.0);
-      when(servicioPrecioMock.calcularImpuesto(anyDouble())).thenReturn(170.0);
-
-      carrito.calcularTotal();
-
-      boolean hayEntradaTotal =
-          carrito.getHistorialOperaciones().stream().anyMatch(op -> op.contains("Total calculado"));
-      assertTrue(hayEntradaTotal);
-    }
   }
 }
 
