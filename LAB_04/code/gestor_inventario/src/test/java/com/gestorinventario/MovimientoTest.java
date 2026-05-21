@@ -16,21 +16,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-/**
- * Construcción y validación de la entidad de trazabilidad {@link Movimiento}.
- *
- * <p>Define el contrato esperado para el registro de auditoría de inventario. Obliga a que todo
- * movimiento tenga una dirección (ENTRADA o SALIDA estandarizada mediante un Enum), una cantidad
- * estrictamente positiva, y una marca de tiempo exacta (fecha y hora).
- */
+/** Construcción y validación de la entidad de trazabilidad {@link Movimiento}. */
 @DisplayName("Movimiento: Construcción y validación de auditoría")
 class MovimientoTest {
 
   // Constantes de prueba
   private static final int CANTIDAD_VALIDA = 15;
-
-  // Nota para el equipo de desarrollo: Las pruebas asumen la existencia de un enumerador
-  // llamado 'TipoMovimiento' con los valores ENTRADA y SALIDA.
 
   // ESCENARIOS FELICES
 
@@ -90,11 +81,6 @@ class MovimientoTest {
   @DisplayName("2. Validación de 'cantidad'")
   class ValidacionCantidad {
 
-    /**
-     * Proveedor de datos para cantidades inválidas en el contexto de un movimiento. A diferencia
-     * del stock, un movimiento no puede ser de 0 unidades (carece de sentido auditar la nada).
-     * Tampoco puede ser negativo (el signo ya lo da el TipoMovimiento).
-     */
     static Stream<Arguments> cantidadesInvalidas() {
       return Stream.of(
           Arguments.of(0, "cero"),

@@ -21,24 +21,16 @@ import org.junit.jupiter.params.provider.ValueSource;
  *
  * <p>Se enfoca exclusivamente en verificar que la clase {@code Producto} se construye correctamente
  * bajo entradas válidas y que rechaza cualquier dato inválido en sus atributos fundamentales:
- * {@code codigo}, {@code nombre}, {@code precio} y {@code cantidad}, procesándolos como cadenas de
- * texto según lo definido en su constructor.
+ * {@code codigo}, {@code nombre}, {@code precio} y {@code cantidad}.
  */
 @DisplayName("Producto Construcción y validación de atributos")
 class ProductoConstructorTest {
 
-  // Constantes de prueba, valores canónicos reutilizados en toda la clase
+  // Constantes de prueba, valores validos reutilizados en toda la clase
 
-  /** Código de producto válido usado como referencia en los tests felices. */
   private static final String CODIGO_VALIDO = "P001";
-
-  /** Nombre de producto válido usado como referencia en los tests felices. */
   private static final String NOMBRE_VALIDO = "Cuaderno A4";
-
-  /** Precio positivo válido en formato texto, usado como referencia en los tests felices. */
   private static final String PRECIO_VALIDO = "25.00";
-
-  /** Cantidad inicial válida en formato texto (mayor que cero) usada en los tests felices. */
   private static final String CANTIDAD_VALIDA = "10";
 
   // Fixture
@@ -65,22 +57,15 @@ class ProductoConstructorTest {
   /**
    * Pruebas que verifican el comportamiento correcto del constructor cuando todos los argumentos
    * cumplen las reglas de negocio y los formatos de parseo.
-   *
-   * <p>Comenzamos siempre con el <em>happy path</em> porque define el contrato mínimo que la
-   * implementación debe cumplir. Si este grupo falla, el resto de los grupos carece de sentido.
    */
   @Nested
   @DisplayName("1. Escenarios felices, construcción válida")
   class EscenariosFelicess {
 
-    /**
-     * Verifica que el constructor parsea y asigna correctamente todos los atributos cuando los
-     * datos de entrada (como texto) son válidos.
-     */
     @Test
     @DisplayName("Constructor parsea y asigna todos los atributos con datos válidos")
     void dadoDatosValidos_cuandoSeConstruye_entoncesAtributosAsignados() {
-      // Arrange, valores explícitos en formato texto
+      // Arrange
       String codigoIngresado = "PROD-42";
       String nombreIngresado = "Resaltador amarillo";
       String precioIngresado = "3.50";
@@ -93,7 +78,7 @@ class ProductoConstructorTest {
       Producto nuevo =
           new Producto(codigoIngresado, nombreIngresado, precioIngresado, cantidadIngresada);
 
-      // Assert, verificación simultánea de todos los atributos ya parseados
+      // Assert
       assertAll(
           "Todos los atributos deben coincidir con los valores del constructor una vez parseados",
           () -> assertEquals(codigoIngresado, nuevo.getCodigo(), "codigo"),
@@ -102,7 +87,6 @@ class ProductoConstructorTest {
           () -> assertEquals(cantidadEsperada, nuevo.getCantidad(), "cantidad"));
     }
 
-    /** Verifica que {@code cantidad = 0} es un estado inicial legal. */
     @Test
     @DisplayName("Cantidad inicial cero es válida, producto sin stock")
     void dadoCantidadCero_cuandoSeConstruye_entoncesStockEsCero() {
@@ -117,10 +101,6 @@ class ProductoConstructorTest {
       assertEquals(0, sinStock.getCantidad(), "El stock inicial de cero debe ser aceptado");
     }
 
-    /**
-     * Verifica que el producto construido con el fixture del {@code @BeforeEach} tiene exactamente
-     * los atributos esperados una vez pasados por las conversiones de texto.
-     */
     @Test
     @DisplayName("Fixture @BeforeEach refleja las constantes de prueba parseadas")
     void dadoFixture_entoncesCoincideConConstantesDePrueba() {
@@ -135,7 +115,6 @@ class ProductoConstructorTest {
 
   // VALIDACIÓN DEL CAMPO: codigo
 
-  /** Pruebas que verifican el rechazo de valores inválidos para el atributo {@code codigo}. */
   @Nested
   @DisplayName("2. Validación de 'codigo'")
   class ValidacionCodigo {
@@ -146,7 +125,7 @@ class ProductoConstructorTest {
       // Arrange
       String codigoInvalido = "";
 
-      // Act & Assert
+      // Act y Assert
       IllegalArgumentException ex =
           assertThrows(
               IllegalArgumentException.class,
@@ -162,7 +141,7 @@ class ProductoConstructorTest {
       // Arrange
       String codigoNulo = null;
 
-      // Act & Assert
+      // Act y Assert
       IllegalArgumentException ex =
           assertThrows(
               IllegalArgumentException.class,
@@ -185,10 +164,6 @@ class ProductoConstructorTest {
 
   // VALIDACIÓN DEL CAMPO: precio
 
-  /**
-   * Pruebas que verifican el rechazo de valores inválidos para el atributo {@code precio}. Evalúa
-   * no solo los límites del valor numérico, sino también los formatos del texto de entrada.
-   */
   @Nested
   @DisplayName("3. Validación de 'precio'")
   class ValidacionPrecio {
@@ -202,9 +177,11 @@ class ProductoConstructorTest {
           Arguments.of("-999.99", "negativo con decimales"));
     }
 
-    @ParameterizedTest(name = "precio numérico {1} ({0}) → IllegalArgumentException")
+    @ParameterizedTest(name = "precio numérico {1} ({0}) lanza IllegalArgumentException")
     @MethodSource("preciosInvalidosNumericos")
-    @DisplayName("Precios numéricos ≤ 0 lanzan IllegalArgumentException con mensaje sobre 'precio'")
+    @DisplayName(
+        "Precios numéricos menores o iguales que 0 lanzan IllegalArgumentException con mensaje"
+            + " sobre 'precio'")
     void dadoPrecioInvalidoNumerico_cuandoSeConstruye_entoncesLanzaExcepcion(
         String precioInvalido, String descripcion) {
       IllegalArgumentException ex =
@@ -224,7 +201,7 @@ class ProductoConstructorTest {
           Arguments.of("25,00", "separador decimal inválido (coma)"));
     }
 
-    @ParameterizedTest(name = "precio formato {1} ({0}) → IllegalArgumentException")
+    @ParameterizedTest(name = "precio formato {1} ({0}) lanza IllegalArgumentException")
     @MethodSource("preciosNoNumericos")
     @DisplayName(
         "Precios con formato no numérico lanzan IllegalArgumentException atrapada por try/catch")
@@ -237,19 +214,6 @@ class ProductoConstructorTest {
               "Debe rechazar precio con formato inválido " + descripcion);
 
       assertMensajeContiene(ex, "numerico");
-    }
-
-    @Test
-    @DisplayName("Precio mínimo positivo (0.01) en formato texto es aceptado")
-    void dadoPrecioMinimoPositivo_cuandoSeConstruye_entoncesEsAceptado() {
-      // Arrange
-      String precioMinimo = "0.01";
-
-      // Act
-      Producto p = new Producto(CODIGO_VALIDO, NOMBRE_VALIDO, precioMinimo, CANTIDAD_VALIDA);
-
-      // Assert
-      assertEquals(0.01, p.getPrecio(), 0.001);
     }
 
     /**
@@ -265,17 +229,25 @@ class ProductoConstructorTest {
       assertThrows(
           NullPointerException.class,
           () -> new Producto(CODIGO_VALIDO, NOMBRE_VALIDO, null, CANTIDAD_VALIDA),
-          "Double.parseDouble no envuelve null en NumberFormatException, propagando la excepción"
-              + " nativa");
+          "Double.parseDouble no envuelve null en NumberFormatException, propagando la excepción");
+    }
+
+    @Test
+    @DisplayName("Precio mínimo positivo (0.01) en formato texto es aceptado")
+    void dadoPrecioMinimoPositivo_cuandoSeConstruye_entoncesEsAceptado() {
+      // Arrange
+      String precioMinimo = "0.01";
+
+      // Act
+      Producto p = new Producto(CODIGO_VALIDO, NOMBRE_VALIDO, precioMinimo, CANTIDAD_VALIDA);
+
+      // Assert
+      assertEquals(0.01, p.getPrecio(), 0.001);
     }
   }
 
   // VALIDACIÓN DEL CAMPO: cantidad
 
-  /**
-   * Pruebas que verifican el rechazo de valores inválidos o con formatos erróneos para el atributo
-   * {@code cantidad}.
-   */
   @Nested
   @DisplayName("4. Validación de 'cantidad'")
   class ValidacionCantidad {
@@ -288,7 +260,7 @@ class ProductoConstructorTest {
           Arguments.of(String.valueOf(Integer.MIN_VALUE), "mínimo entero negativo"));
     }
 
-    @ParameterizedTest(name = "cantidad {1} ({0}) → IllegalArgumentException")
+    @ParameterizedTest(name = "cantidad {1} ({0}) lanza IllegalArgumentException")
     @MethodSource("cantidadesNegativas")
     @DisplayName(
         "Cantidades negativas lanzan IllegalArgumentException con mensaje sobre 'cantidad'")
@@ -312,7 +284,7 @@ class ProductoConstructorTest {
           Arguments.of(null, "valor nulo (Integer.parseInt sí lo envuelve en NFE)"));
     }
 
-    @ParameterizedTest(name = "cantidad formato {1} ({0}) → IllegalArgumentException")
+    @ParameterizedTest(name = "cantidad formato {1} ({0}) lanza IllegalArgumentException")
     @MethodSource("cantidadesNoNumericas")
     @DisplayName("Cantidades con formato no numérico o nulo lanzan IllegalArgumentException")
     void dadoCantidadFormatoInvalido_cuandoSeConstruye_entoncesLanzaExcepcion(
@@ -333,7 +305,7 @@ class ProductoConstructorTest {
       String precioAlto = "999999.99";
       String cantidadNegativa = "-1";
 
-      // Act & Assert
+      // Act y Assert
       assertThrows(
           IllegalArgumentException.class,
           () -> new Producto(CODIGO_VALIDO, NOMBRE_VALIDO, precioAlto, cantidadNegativa));
@@ -342,17 +314,13 @@ class ProductoConstructorTest {
 
   // COMBINACIONES DE ENTRADAS INVÁLIDAS
 
-  /**
-   * Pruebas que verifican que la validación funciona correctamente cuando varios campos (como
-   * texto) son inválidos simultáneamente.
-   */
   @Nested
   @DisplayName("5. Combinaciones de entradas inválidas")
   class CombinacionesInvalidas {
 
     static Stream<Arguments> combinacionesInvalidas() {
       return Stream.of(
-          // codigo  , nombre       , precio , cantidad , descripcion
+          // codigo, nombre, precio, cantidad, descripcion
           Arguments.of("", NOMBRE_VALIDO, PRECIO_VALIDO, "-1", "codigo vacío + cantidad negativa"),
           Arguments.of(null, NOMBRE_VALIDO, "0.0", "10", "codigo null + precio cero"),
           Arguments.of("P1", NOMBRE_VALIDO, "-5.0", "-5", "precio negativo + cantidad negativa"),
@@ -365,7 +333,7 @@ class ProductoConstructorTest {
     @DisplayName("Combinaciones inválidas siempre lanzan IllegalArgumentException")
     void dadaCombinacionInvalida_cuandoSeConstruye_entoncesLanzaExcepcion(
         String codigo, String nombre, String precio, String cantidad, String descripcion) {
-      // Act & Assert
+      // Act y Assert
       assertThrows(
           IllegalArgumentException.class,
           () -> new Producto(codigo, nombre, precio, cantidad),

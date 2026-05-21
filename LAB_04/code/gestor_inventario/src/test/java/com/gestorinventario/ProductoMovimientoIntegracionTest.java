@@ -11,16 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-/**
- * Pruebas de Integración: Interacción entre {@link Producto} y {@link Movimiento}.
- *
- * <p>El objetivo es comprobar que las operaciones de negocio en un producto (agregar/extraer stock)
- * generan automáticamente registros de auditoría correctos (movimientos).
- *
- * <p><b>Contrato esperado para Desarrollo:</b> Se asume que la clase {@code Producto} incorporará
- * un método {@code obtenerHistorial()} que retorna una {@code List<Movimiento>} inmutable con la
- * trazabilidad del objeto.
- */
 @DisplayName("Integración: Producto y Registro de Movimientos")
 class ProductoMovimientoIntegracionTest {
 
@@ -34,17 +24,17 @@ class ProductoMovimientoIntegracionTest {
   }
 
   @Nested
-  @DisplayName("1. Flujo exitoso de registro de auditoría")
+  @DisplayName("1. Flujo exitoso de registro de movimiento")
   class FlujoRegistroExitoso {
 
     @Test
     @DisplayName("Operaciones válidas de stock generan registros en el historial")
     void dadoOperacionesExitosas_cuandoSeModificaStock_entoncesSeRegistranMovimientos() {
-      // Act: Simulamos un flujo de negocio real (1 entrada, 1 salida parcial)
+      // Act
       producto.agregarStock(20);
       producto.extraerStock(5);
 
-      // Assert: Verificamos la colaboración (el producto debió crear los movimientos)
+      // Assert
       List<Movimiento> historial = producto.obtenerHistorial();
 
       assertNotNull(historial, "El historial de movimientos no debe ser nulo");
@@ -73,10 +63,10 @@ class ProductoMovimientoIntegracionTest {
   class ConsistenciaAnteFallos {
 
     @Test
-    @DisplayName("Operaciones fallidas (ej. sobregiro) NO dejan registros fantasma en el historial")
+    @DisplayName("Operaciones fallidas no dejan registros fantasma")
     void dadoOperacionInvalida_cuandoFalla_entoncesHistorialSeMantieneIntacto() {
-      // Arrange: Preparamos un estado válido inicial
-      producto.agregarStock(10); // Genera 1 registro válido
+      // Arrange
+      producto.agregarStock(10);
 
       // Act: Intentamos una extracción ilegal (15 > 10)
       assertThrows(
@@ -84,7 +74,7 @@ class ProductoMovimientoIntegracionTest {
           () -> producto.extraerStock(15),
           "La extracción debe fallar por falta de stock");
 
-      // Assert: Verificamos que la operación abortada no ensució la auditoría
+      // Assert
       List<Movimiento> historial = producto.obtenerHistorial();
 
       assertAll(
