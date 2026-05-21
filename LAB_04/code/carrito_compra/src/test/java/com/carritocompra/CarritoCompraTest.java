@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-
 @DisplayName("CarritoCompra — pruebas sin mocks")
 class CarritoCompraTest {
 
@@ -180,9 +179,10 @@ class CarritoCompraTest {
       assertTrue(ultimaOp.contains("El producto no se encontro en el carrito"));
     }
   }
-// -------------------------------------------------------------------------
-// Actualizar cantidad
-// -------------------------------------------------------------------------
+
+  // -------------------------------------------------------------------------
+  // Actualizar cantidad
+  // -------------------------------------------------------------------------
 
   @Nested
   @DisplayName("Actualizar cantidad")
@@ -204,10 +204,7 @@ class CarritoCompraTest {
     void actualizarCantidadCero() {
       carrito.agregarProducto(laptop, 2);
 
-      assertThrows(
-          IllegalArgumentException.class,
-          () -> carrito.actualizarCantidad(laptop, 0)
-      );
+      assertThrows(IllegalArgumentException.class, () -> carrito.actualizarCantidad(laptop, 0));
     }
 
     @Test
@@ -215,10 +212,7 @@ class CarritoCompraTest {
     void actualizarCantidadNegativa() {
       carrito.agregarProducto(laptop, 2);
 
-      assertThrows(
-          IllegalArgumentException.class,
-          () -> carrito.actualizarCantidad(laptop, -1)
-      );
+      assertThrows(IllegalArgumentException.class, () -> carrito.actualizarCantidad(laptop, -1));
     }
 
     @Test
@@ -230,8 +224,7 @@ class CarritoCompraTest {
 
       assertTrue(
           carrito.getHistorialOperaciones().stream()
-              .anyMatch(op -> op.contains("Se actualizo la cantidad de Laptop a 4"))
-      );
+              .anyMatch(op -> op.contains("Se actualizo la cantidad de Laptop a 4")));
     }
 
     @Test
@@ -247,6 +240,7 @@ class CarritoCompraTest {
       assertEquals(2, carrito.getItems().get(0).getCantidad());
     }
   }
+
   // -------------------------------------------------------------------------
   // Vaciar carrito
   // -------------------------------------------------------------------------
@@ -319,7 +313,7 @@ class CarritoCompraTest {
   // -------------------------------------------------------------------------
   // Resumen de compra
   // -------------------------------------------------------------------------
-  
+
   @Nested
   @DisplayName("Resumen de compra")
   class ResumenCompra {
@@ -342,8 +336,7 @@ class CarritoCompraTest {
       assertAll(
           () -> assertTrue(resumen.contains("Producto: Laptop")),
           () -> assertTrue(resumen.contains("Cantidad: 2")),
-          () -> assertTrue(resumen.contains("Precio: 1000.0"))
-      );
+          () -> assertTrue(resumen.contains("Precio: 1000.0")));
     }
 
     @Test
@@ -359,8 +352,7 @@ class CarritoCompraTest {
           () -> assertTrue(resumen.contains("Cantidad: 1")),
           () -> assertTrue(resumen.contains("Producto: Mouse")),
           () -> assertTrue(resumen.contains("Cantidad: 3")),
-          () -> assertTrue(resumen.contains("Precio: 25.0"))
-      );
+          () -> assertTrue(resumen.contains("Precio: 25.0")));
     }
 
     @Test
@@ -373,12 +365,12 @@ class CarritoCompraTest {
       assertTrue(carrito.getHistorialOperaciones().size() > tamanoAntes);
 
       String ultimaOperacion =
-          carrito.getHistorialOperaciones()
-              .get(carrito.getHistorialOperaciones().size() - 1);
+          carrito.getHistorialOperaciones().get(carrito.getHistorialOperaciones().size() - 1);
 
       assertTrue(ultimaOperacion.contains("Se obtuvo el resumen de productos"));
     }
   }
+
   // -------------------------------------------------------------------------
   // Casos límite
   // -------------------------------------------------------------------------
@@ -419,4 +411,3 @@ class CarritoCompraTest {
     }
   }
 }
-

@@ -1,9 +1,7 @@
 package com.carritocompra;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -176,12 +174,12 @@ class CarritoCompraMockTest {
     @Test
     @DisplayName("obtenerResumenCompra no invoca el servicio de precios")
     void resumenNoInvocaServicioPrecio() {
-        carrito.agregarProducto(laptop, 1);
+      carrito.agregarProducto(laptop, 1);
 
-        carrito.obtenerResumenCompra();
+      carrito.obtenerResumenCompra();
 
-        verify(servicioPrecioMock, never()).calcularDescuento(anyDouble());
-        verify(servicioPrecioMock, never()).calcularImpuesto(anyDouble());
+      verify(servicioPrecioMock, never()).calcularDescuento(anyDouble());
+      verify(servicioPrecioMock, never()).calcularImpuesto(anyDouble());
     }
 
     @Test
@@ -205,7 +203,5 @@ class CarritoCompraMockTest {
       verify(servicioPrecioMock, never()).calcularDescuento(anyDouble());
       verify(servicioPrecioMock, never()).calcularImpuesto(anyDouble());
     }
-
   }
 }
-

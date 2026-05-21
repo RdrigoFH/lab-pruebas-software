@@ -1,34 +1,38 @@
 package com.carritocompra;
+
 import java.time.LocalDateTime;
 
 public class ItemCarrito {
-    private Producto producto;
-    private int cantidad;
-    private LocalDateTime fecha;
+  private Producto producto;
+  private int cantidad;
+  private LocalDateTime fecha;
 
-    public ItemCarrito(Producto producto, int cantidad) {
-        this.producto = producto;
-        this.cantidad = cantidad;
-        this.fecha = LocalDateTime.now();
-    }
+  public ItemCarrito(Producto producto, int cantidad) {
+    this.producto = producto;
+    this.cantidad = cantidad;
+    this.fecha = LocalDateTime.now();
+  }
 
-    public Producto getProducto() {
-        return producto;
-    }
-    public int getCantidad() {
-        return cantidad;
-    }
-    public void setCantidad(int cantidad) {
-        if (cantidad <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser positiva");
-        }
-        this.cantidad = cantidad;
-    }
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
+  public Producto getProducto() {
+    return producto;
+  }
 
-    public double calcularSubtotal() {
-        return producto.getPrecio() * cantidad;
+  public int getCantidad() {
+    return cantidad;
+  }
+
+  public void setCantidad(int cantidad) {
+    if (cantidad <= 0) {
+      throw new IllegalArgumentException("La cantidad debe ser positiva");
     }
+    this.cantidad = cantidad;
+  }
+
+  public LocalDateTime getFecha() {
+    return fecha;
+  }
+
+  public double calcularSubtotal() {
+    return producto.getPrecio() * cantidad;
+  }
 }

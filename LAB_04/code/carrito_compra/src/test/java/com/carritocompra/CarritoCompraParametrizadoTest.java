@@ -84,4 +84,3 @@ class CarritoCompraParametrizadoTest {
     assertEquals(subtotalEsperado, carrito.calcularPrecioProductos(), 0.001);
   }
 }
-
