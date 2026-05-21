@@ -11,16 +11,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-/**
- * Pruebas unitarias de {@link CarritoCompra} sin mocks.
- *
- * <p>Usa una implementación stub de {@link ServicioPrecio} con descuento e impuesto en cero para
- * aislar la lógica propia del carrito.
- */
+
 @DisplayName("CarritoCompra — pruebas sin mocks")
 class CarritoCompraTest {
 
-  /** Stub que retorna 0 en descuento e impuesto para aislar la lógica del carrito. */
   private static final ServicioPrecio SIN_CARGOS =
       new ServicioPrecio() {
         @Override
@@ -186,7 +180,73 @@ class CarritoCompraTest {
       assertTrue(ultimaOp.contains("El producto no se encontro en el carrito"));
     }
   }
+// -------------------------------------------------------------------------
+// Actualizar cantidad
+// -------------------------------------------------------------------------
 
+  @Nested
+  @DisplayName("Actualizar cantidad")
+  class ActualizarCantidad {
+
+    @Test
+    @DisplayName("actualiza cantidad de producto existente")
+    void actualizarCantidadProductoExistente() {
+      carrito.agregarProducto(laptop, 2);
+
+      carrito.actualizarCantidad(laptop, 5);
+
+      assertEquals(5, carrito.getItems().get(0).getCantidad());
+      assertEquals(5, carrito.getCantidadTotalProductos());
+    }
+
+    @Test
+    @DisplayName("lanza excepción al actualizar con cantidad cero")
+    void actualizarCantidadCero() {
+      carrito.agregarProducto(laptop, 2);
+
+      assertThrows(
+          IllegalArgumentException.class,
+          () -> carrito.actualizarCantidad(laptop, 0)
+      );
+    }
+
+    @Test
+    @DisplayName("lanza excepción al actualizar con cantidad negativa")
+    void actualizarCantidadNegativa() {
+      carrito.agregarProducto(laptop, 2);
+
+      assertThrows(
+          IllegalArgumentException.class,
+          () -> carrito.actualizarCantidad(laptop, -1)
+      );
+    }
+
+    @Test
+    @DisplayName("actualizar cantidad registra operación en historial")
+    void actualizarCantidadRegistraHistorial() {
+      carrito.agregarProducto(laptop, 2);
+
+      carrito.actualizarCantidad(laptop, 4);
+
+      assertTrue(
+          carrito.getHistorialOperaciones().stream()
+              .anyMatch(op -> op.contains("Se actualizo la cantidad de Laptop a 4"))
+      );
+    }
+
+    @Test
+    @DisplayName("actualizar producto inexistente no modifica el carrito")
+    void actualizarProductoInexistenteNoModificaCarrito() {
+      carrito.agregarProducto(laptop, 2);
+
+      Producto teclado = new Producto("P004", "Teclado", 80.0, true);
+
+      carrito.actualizarCantidad(teclado, 5);
+
+      assertEquals(1, carrito.getItems().size());
+      assertEquals(2, carrito.getItems().get(0).getCantidad());
+    }
+  }
   // -------------------------------------------------------------------------
   // Vaciar carrito
   // -------------------------------------------------------------------------

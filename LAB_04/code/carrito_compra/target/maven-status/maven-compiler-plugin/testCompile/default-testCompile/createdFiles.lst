@@ -4,6 +4,7 @@ com\carritocompra\CarritoCompraMockTest$CalculoTotal.class
 com\carritocompra\CarritoCompraParametrizadoTest.class
 com\carritocompra\CarritoCompraTest$CasosLimite.class
 com\carritocompra\CarritoCompraTest$1.class
+com\carritocompra\CarritoCompraTest$ActualizarCantidad.class
 com\carritocompra\CarritoCompraTest$VaciarCarrito.class
 com\carritocompra\CarritoCompraMockTest$VerificacionLlamadas.class
 com\carritocompra\CarritoCompraTest$Construccion.class

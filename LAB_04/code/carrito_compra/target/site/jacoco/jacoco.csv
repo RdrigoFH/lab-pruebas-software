@@ -1,4 +1,4 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-carrito_compra,com.carritocompra,CarritoCompra,1,309,2,24,1,77,2,30,0,19
+carrito_compra,com.carritocompra,CarritoCompra,0,310,0,26,0,78,0,32,0,19
 carrito_compra,com.carritocompra,ItemCarrito,8,32,1,1,2,11,2,5,1,5
 carrito_compra,com.carritocompra,Producto,15,43,5,5,3,13,5,5,0,5
