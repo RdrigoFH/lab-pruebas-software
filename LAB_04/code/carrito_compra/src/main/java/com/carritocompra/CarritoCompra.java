@@ -44,17 +44,18 @@ public class CarritoCompra {
         productoDisponible(producto);
 
         if (contieneProducto(producto)) {
-            throw new IllegalArgumentException("El producto ya esta en el carrito");
+            actualizarCantidad(producto, cantidad);
+        }else {
+            ItemCarrito item = new ItemCarrito(producto, cantidad);
+            this.items.add(item);
+            registrarOperacion("Se agrego " + cantidad + " de " + producto.getNombre());
         }
 
-        ItemCarrito item = new ItemCarrito(producto, cantidad);
-        this.items.add(item);
-        registrarOperacion("Se agrego " + cantidad + " de " + producto.getNombre());
     }
 
     public void removerProducto(Producto producto) {
         validarProductoNoNulo(producto);
-        boolean eliminado = items.removeIf(item -> item.getProducto().getId() == producto.getId());
+        boolean eliminado = items.removeIf(item -> item.getProducto().getId().equals(producto.getId()));
         if (eliminado) {
             registrarOperacion("Se elimino " + producto.getNombre());
         } else {
@@ -84,13 +85,16 @@ public class CarritoCompra {
         registrarOperacion("Se calculo el precio total: " + total);
         return total;
     }
-    public void obtenerResumenCompra(){
-        System.out.println("Resumen de productos:");
+
+    public String obtenerResumenCompra() {
+        String resumen = "Resumen de productos:\n";
 
         for (ItemCarrito item : items) {
-            System.out.println("- Producto: " + item.getProducto().getNombre() + ", Cantidad: " + item.getCantidad() + ", Precio: " + item.getProducto().getPrecio() + "\n");
+            resumen = resumen + "- Producto: " + item.getProducto().getNombre() + ", Cantidad: " + item.getCantidad() + ", Precio: " + item.getProducto().getPrecio() + "\n";
         }
+
         registrarOperacion("Se obtuvo el resumen de productos");
+        return resumen;
     }
 
     public double calcularDescuento() {
@@ -120,7 +124,7 @@ public class CarritoCompra {
     public void actualizarCantidad(Producto producto, int nuevaCantidad) {
         cantidadValida(nuevaCantidad);
         for (ItemCarrito item : items) {
-            if (item.getProducto().getId() == producto.getId()) {
+            if (item.getProducto().getId().equals(producto.getId())) {
                 item.setCantidad(nuevaCantidad);
                 break;
             }
@@ -130,7 +134,7 @@ public class CarritoCompra {
 
     public boolean contieneProducto(Producto producto) {
         for (ItemCarrito item : items) {
-            if (item.getProducto().getId() == producto.getId()) {
+            if (item.getProducto().getId().equals(producto.getId())) {
                 return true;
             }
         }

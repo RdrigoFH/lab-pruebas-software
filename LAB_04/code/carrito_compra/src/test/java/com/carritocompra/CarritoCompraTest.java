@@ -87,17 +87,14 @@ class CarritoCompraTest {
     }
 
     @Test
-    @DisplayName("lanza excepción al agregar producto duplicado")
-    void agregarProductoDuplicadoNoSeAgrega() {
-        carrito.agregarProducto(laptop, 2);
+    @DisplayName("actualiza la cantidad al agregar un producto duplicado")
+    void agregarProductoDuplicadoActualizaCantidad() {
+      carrito.agregarProducto(laptop, 2);
+      carrito.agregarProducto(laptop, 3);
 
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> carrito.agregarProducto(laptop, 3)
-        );
-
-        assertEquals(1, carrito.getItems().size());
-        assertEquals(2, carrito.getItems().get(0).getCantidad());
+      assertEquals(1, carrito.getItems().size());
+      assertEquals(3, carrito.getItems().get(0).getCantidad());
+      assertEquals(3, carrito.getCantidadTotalProductos());
     }
 
     @Test
@@ -142,32 +139,29 @@ class CarritoCompraTest {
   @Nested
   @DisplayName("Remover productos")
   class RemoverProductos {
-/* 
-    @Test
-    @DisplayName("reduce la cantidad al remover parcialmente")
-    void removerParcialReduceCantidad() {
-      carrito.agregarProducto(laptop, 5);
-      carrito.removerProducto(laptop);
-
-      assertEquals(3, carrito.getItems().get(0).getCantidad());
-    }
 
     @Test
-    @DisplayName("elimina el ítem al remover la cantidad exacta")
-    void removerCantidadExactaEliminaItem() {
+    @DisplayName("elimina el producto del carrito")
+    void removerProductoExistenteEliminaItem() {
       carrito.agregarProducto(laptop, 3);
       carrito.removerProducto(laptop);
 
       assertFalse(carrito.contieneProducto(laptop));
+      assertTrue(carrito.getItems().isEmpty());
+      assertEquals(0, carrito.getCantidadTotalProductos());
     }
 
     @Test
-    @DisplayName("elimina el ítem al remover más de la cantidad existente")
-    void removerExcesoEliminaItem() {
-      carrito.agregarProducto(laptop, 2);
+    @DisplayName("remueve solo el producto indicado")
+    void removerProductoMantieneOtrosItems() {
+      carrito.agregarProducto(laptop, 1);
+      carrito.agregarProducto(mouse, 2);
+
       carrito.removerProducto(laptop);
 
       assertFalse(carrito.contieneProducto(laptop));
+      assertTrue(carrito.contieneProducto(mouse));
+      assertEquals(2, carrito.getCantidadTotalProductos());
     }
 
     @Test
@@ -177,17 +171,20 @@ class CarritoCompraTest {
     }
 
     @Test
-    @DisplayName("lanza excepción al remover cantidad no positiva")
-    void removerCantidadNoPositiva() {
-      carrito.agregarProducto(laptop, 1);
-      assertThrows(IllegalArgumentException.class, () -> carrito.removerProducto(laptop));
-    }
+    @DisplayName("producto inexistente no modifica el carrito y registra historial")
+    void removerProductoInexistenteRegistraHistorial() {
+      int tamanoAntes = carrito.getHistorialOperaciones().size();
 
-    @Test
-    @DisplayName("lanza excepción al remover producto inexistente")
-    void removerProductoInexistente() {
-      assertThrows(IllegalStateException.class, () -> carrito.removerProducto(laptop));
-    }*/
+      carrito.removerProducto(laptop);
+
+      assertTrue(carrito.getItems().isEmpty());
+      assertTrue(carrito.getHistorialOperaciones().size() > tamanoAntes);
+
+      String ultimaOp =
+          carrito.getHistorialOperaciones().get(carrito.getHistorialOperaciones().size() - 1);
+
+      assertTrue(ultimaOp.contains("El producto no se encontro en el carrito"));
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -262,9 +259,66 @@ class CarritoCompraTest {
   // -------------------------------------------------------------------------
   // Resumen de compra
   // -------------------------------------------------------------------------
-
   
+  @Nested
+  @DisplayName("Resumen de compra")
+  class ResumenCompra {
 
+    @Test
+    @DisplayName("resumen de carrito vacío muestra encabezado")
+    void resumenCarritoVacioMuestraEncabezado() {
+      String resumen = carrito.obtenerResumenCompra();
+
+      assertTrue(resumen.contains("Resumen de productos:"));
+    }
+
+    @Test
+    @DisplayName("resumen contiene datos de un producto")
+    void resumenContieneDatosDeUnProducto() {
+      carrito.agregarProducto(laptop, 2);
+
+      String resumen = carrito.obtenerResumenCompra();
+
+      assertAll(
+          () -> assertTrue(resumen.contains("Producto: Laptop")),
+          () -> assertTrue(resumen.contains("Cantidad: 2")),
+          () -> assertTrue(resumen.contains("Precio: 1000.0"))
+      );
+    }
+
+    @Test
+    @DisplayName("resumen contiene múltiples productos")
+    void resumenContieneMultiplesProductos() {
+      carrito.agregarProducto(laptop, 1);
+      carrito.agregarProducto(mouse, 3);
+
+      String resumen = carrito.obtenerResumenCompra();
+
+      assertAll(
+          () -> assertTrue(resumen.contains("Producto: Laptop")),
+          () -> assertTrue(resumen.contains("Cantidad: 1")),
+          () -> assertTrue(resumen.contains("Producto: Mouse")),
+          () -> assertTrue(resumen.contains("Cantidad: 3")),
+          () -> assertTrue(resumen.contains("Precio: 25.0"))
+      );
+    }
+
+    @Test
+    @DisplayName("obtener resumen registra operación en historial")
+    void resumenRegistraOperacionEnHistorial() {
+      int tamanoAntes = carrito.getHistorialOperaciones().size();
+
+      carrito.obtenerResumenCompra();
+
+      assertTrue(carrito.getHistorialOperaciones().size() > tamanoAntes);
+
+      String ultimaOperacion =
+          carrito.getHistorialOperaciones()
+              .get(carrito.getHistorialOperaciones().size() - 1);
+
+      assertTrue(ultimaOperacion.contains("Se obtuvo el resumen de productos"));
+    }
+  }
   // -------------------------------------------------------------------------
   // Casos límite
   // -------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.carritocompra.CarritoCompraParametrizadoTest" time="0.391" tests="15" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.carritocompra.CarritoCompraParametrizadoTest" time="0.325" tests="15" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="PE"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Microsoft\jdk-25.0.3.9-hotspot\bin"/>
-    <property name="sun.java.command" value="C:\Users\Usuario\AppData\Local\Temp\surefire15000455914817950908\surefirebooter-20260520201056146_3.jar C:\Users\Usuario\AppData\Local\Temp\surefire15000455914817950908 2026-05-20T20-10-55_877-jvmRun1 surefire-20260520201056146_1tmp surefire_0-20260520201056146_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Usuario\AppData\Local\Temp\surefire6640530437019999332\surefirebooter-20260520204949756_3.jar C:\Users\Usuario\AppData\Local\Temp\surefire6640530437019999332 2026-05-20T20-49-49_542-jvmRun1 surefire-20260520204949756_1tmp surefire_0-20260520204949756_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="D:\pruebas\lab-pruebas-software\LAB_04\code\carrito_compra\target\test-classes;D:\pruebas\lab-pruebas-software\LAB_04\code\carrito_compra\target\classes;C:\Users\Usuario\.m2\repository\org\junit\jupiter\junit-jupiter\5.13.1\junit-jupiter-5.13.1.jar;C:\Users\Usuario\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.13.1\junit-jupiter-api-5.13.1.jar;C:\Users\Usuario\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Usuario\.m2\repository\org\junit\platform\junit-platform-commons\1.13.1\junit-platform-commons-1.13.1.jar;C:\Users\Usuario\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Usuario\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.13.1\junit-jupiter-params-5.13.1.jar;C:\Users\Usuario\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.13.1\junit-jupiter-engine-5.13.1.jar;C:\Users\Usuario\.m2\repository\org\junit\platform\junit-platform-engine\1.13.1\junit-platform-engine-1.13.1.jar;C:\Users\Usuario\.m2\repository\org\mockito\mockito-core\5.20.0\mockito-core-5.20.0.jar;C:\Users\Usuario\.m2\repository\net\bytebuddy\byte-buddy\1.17.7\byte-buddy-1.17.7.jar;C:\Users\Usuario\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.7\byte-buddy-agent-1.17.7.jar;C:\Users\Usuario\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\Usuario\.m2\repository\org\mockito\mockito-junit-jupiter\5.20.0\mockito-junit-jupiter-5.20.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Usuario\AppData\Local\Temp\surefire15000455914817950908\surefirebooter-20260520201056146_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Usuario\AppData\Local\Temp\surefire6640530437019999332\surefirebooter-20260520204949756_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="25.0.3+9-LTS"/>
@@ -60,19 +60,19 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="subtotalCorrecto(double, int, double)[1]" classname="CarritoCompra — pruebas parametrizadas" time="0.07"/>
-  <testcase name="subtotalCorrecto(double, int, double)[2]" classname="CarritoCompra — pruebas parametrizadas" time="0.005"/>
+  <testcase name="subtotalCorrecto(double, int, double)[1]" classname="CarritoCompra — pruebas parametrizadas" time="0.053"/>
+  <testcase name="subtotalCorrecto(double, int, double)[2]" classname="CarritoCompra — pruebas parametrizadas" time="0.004"/>
   <testcase name="subtotalCorrecto(double, int, double)[3]" classname="CarritoCompra — pruebas parametrizadas" time="0.004"/>
-  <testcase name="subtotalCorrecto(double, int, double)[4]" classname="CarritoCompra — pruebas parametrizadas" time="0.004"/>
-  <testcase name="subtotalCorrecto(double, int, double)[5]" classname="CarritoCompra — pruebas parametrizadas" time="0.005"/>
-  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[1]" classname="CarritoCompra — pruebas parametrizadas" time="0.014"/>
-  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[2]" classname="CarritoCompra — pruebas parametrizadas" time="0.006"/>
-  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[3]" classname="CarritoCompra — pruebas parametrizadas" time="0.006"/>
-  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[4]" classname="CarritoCompra — pruebas parametrizadas" time="0.007"/>
-  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[5]" classname="CarritoCompra — pruebas parametrizadas" time="0.007"/>
-  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[6]" classname="CarritoCompra — pruebas parametrizadas" time="0.008"/>
-  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[7]" classname="CarritoCompra — pruebas parametrizadas" time="0.007"/>
+  <testcase name="subtotalCorrecto(double, int, double)[4]" classname="CarritoCompra — pruebas parametrizadas" time="0.005"/>
+  <testcase name="subtotalCorrecto(double, int, double)[5]" classname="CarritoCompra — pruebas parametrizadas" time="0.004"/>
+  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[1]" classname="CarritoCompra — pruebas parametrizadas" time="0.012"/>
+  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[2]" classname="CarritoCompra — pruebas parametrizadas" time="0.004"/>
+  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[3]" classname="CarritoCompra — pruebas parametrizadas" time="0.005"/>
+  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[4]" classname="CarritoCompra — pruebas parametrizadas" time="0.004"/>
+  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[5]" classname="CarritoCompra — pruebas parametrizadas" time="0.006"/>
+  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[6]" classname="CarritoCompra — pruebas parametrizadas" time="0.006"/>
+  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[7]" classname="CarritoCompra — pruebas parametrizadas" time="0.006"/>
   <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[8]" classname="CarritoCompra — pruebas parametrizadas" time="0.006"/>
-  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[9]" classname="CarritoCompra — pruebas parametrizadas" time="0.005"/>
+  <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[9]" classname="CarritoCompra — pruebas parametrizadas" time="0.003"/>
   <testcase name="totalCalculadoCorrectamente(double, int, double, double, double)[10]" classname="CarritoCompra — pruebas parametrizadas" time="0.006"/>
 </testsuite>

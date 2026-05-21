@@ -1,4 +1,5 @@
 com\carritocompra\CarritoCompraMockTest$CalculoDescuento.class
+com\carritocompra\CarritoCompraTest$ResumenCompra.class
 com\carritocompra\CarritoCompraMockTest$CalculoTotal.class
 com\carritocompra\CarritoCompraParametrizadoTest.class
 com\carritocompra\CarritoCompraTest$CasosLimite.class
