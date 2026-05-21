@@ -33,7 +33,7 @@ public class CarritoCompra {
 <span class="fc" id="L33">        int cantidadTotal = 0;</span>
 <span class="fc bfc" id="L34" title="All 2 branches covered.">        for (ItemCarrito item : items) {</span>
 <span class="fc" id="L35">            cantidadTotal += item.getCantidad();</span>
-        }
+<span class="fc" id="L36">        }</span>
 <span class="fc" id="L37">        return cantidadTotal;</span>
     }
     //Metodos
@@ -57,7 +57,7 @@ public class CarritoCompra {
 <span class="nc bnc" id="L57" title="All 2 branches missed.">        boolean eliminado = items.removeIf(item -&gt; item.getProducto().getId() == producto.getId());</span>
 <span class="nc bnc" id="L58" title="All 2 branches missed.">        if (eliminado) {</span>
 <span class="nc" id="L59">            registrarOperacion(&quot;Se elimino &quot; + producto.getNombre());</span>
-<span class="nc" id="L60">        } else {</span>
+        } else {
 <span class="nc" id="L61">            registrarOperacion(&quot;El producto no se encontro en el carrito&quot;);</span>
         }
 <span class="nc" id="L63">    }</span>
@@ -71,7 +71,7 @@ public class CarritoCompra {
 <span class="fc" id="L71">        double total = 0.0;</span>
 <span class="fc bfc" id="L72" title="All 2 branches covered.">        for (ItemCarrito item : items) {</span>
 <span class="fc" id="L73">            total += item.calcularSubtotal();</span>
-        }
+<span class="fc" id="L74">        }</span>
 <span class="fc" id="L75">        return total;</span>
     }
     public double calcularPrecioTotal() {
@@ -89,7 +89,7 @@ public class CarritoCompra {
 
 <span class="fc bfc" id="L90" title="All 2 branches covered.">        for (ItemCarrito item : items) {</span>
 <span class="fc" id="L91">            System.out.println(&quot;- Producto: &quot; + item.getProducto().getNombre() + &quot;, Cantidad: &quot; + item.getCantidad() + &quot;, Precio: &quot; + item.getProducto().getPrecio() + &quot;\n&quot;);</span>
-        }
+<span class="fc" id="L92">        }</span>
 <span class="fc" id="L93">        registrarOperacion(&quot;Se obtuvo el resumen de productos&quot;);</span>
 <span class="fc" id="L94">    }</span>
 
@@ -124,7 +124,7 @@ public class CarritoCompra {
 <span class="nc" id="L124">                item.setCantidad(nuevaCantidad);</span>
 <span class="nc" id="L125">                break;</span>
             }
-        }
+<span class="nc" id="L127">        }</span>
 <span class="nc" id="L128">        registrarOperacion(&quot;Se actualizo la cantidad de &quot; + producto.getNombre() + &quot; a &quot; + nuevaCantidad);</span>
 <span class="nc" id="L129">    }</span>
 
@@ -133,7 +133,7 @@ public class CarritoCompra {
 <span class="fc bfc" id="L133" title="All 2 branches covered.">            if (item.getProducto().getId() == producto.getId()) {</span>
 <span class="fc" id="L134">                return true;</span>
             }
-        }
+<span class="fc" id="L136">        }</span>
 <span class="fc" id="L137">        return false;</span>
     }
     
