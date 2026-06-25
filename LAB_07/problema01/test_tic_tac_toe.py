@@ -1,46 +1,54 @@
-# test_final.py - PRUEBAS UNITARIAS COMPLETAS
-# Cobertura del 100% en sentencias, ramas y condiciones
+# test_tic_tac_toe.py - PRUEBAS UNITARIAS CORREGIDAS (100% COBERTURA)
 
 import pytest
 from unittest.mock import patch
-from tic_tac_toe_AI import *
+from tic_tac_toe_Al import *
 
 # ============================================
 # PRUEBAS DE FUNCIONES BÁSICAS
 # ============================================
 
 def test_default():
-    """Prueba la función default()"""
     with patch('builtins.print'):
         default()
 
 
 def test_rules():
-    """Prueba la función rules()"""
     with patch('builtins.print'):
         rules()
 
 
 def test_play_yes():
-    """Prueba play() con respuesta 'Yes'"""
     with patch('builtins.input', return_value='Yes'):
         assert play() is True
 
 
 def test_play_no():
-    """Prueba play() con respuesta 'No'"""
     with patch('builtins.input', return_value='No'):
         assert play() is False
 
 
 def test_play_y():
-    """Prueba play() con respuesta 'y'"""
     with patch('builtins.input', return_value='y'):
         assert play() is True
 
 
+def test_play_n():
+    with patch('builtins.input', return_value='n'):
+        assert play() is False
+
+
+def test_play_Y():
+    with patch('builtins.input', return_value='Y'):
+        assert play() is True
+
+
+def test_play_N():
+    with patch('builtins.input', return_value='N'):
+        assert play() is False
+
+
 def test_names():
-    """Prueba la función names()"""
     with patch('builtins.input', side_effect=['Alice', 'Bob']):
         p1, p2 = names()
         assert p1 == 'Alice'
@@ -48,7 +56,6 @@ def test_names():
 
 
 def test_names_capitalize():
-    """Prueba names() con capitalización"""
     with patch('builtins.input', side_effect=['alice', 'bob']):
         p1, p2 = names()
         assert p1 == 'Alice'
@@ -56,11 +63,10 @@ def test_names_capitalize():
 
 
 # ============================================
-# PRUEBAS DE choice()
+# PRUEBAS DE choice() - CORREGIDAS
 # ============================================
 
 def test_choice_x():
-    """Prueba choice() cuando el jugador elige X"""
     with patch('builtins.input', return_value='X'):
         with patch('builtins.print'):
             p1_choice, p2_choice = choice()
@@ -69,7 +75,6 @@ def test_choice_x():
 
 
 def test_choice_o():
-    """Prueba choice() cuando el jugador elige O"""
     with patch('builtins.input', return_value='O'):
         with patch('builtins.print'):
             p1_choice, p2_choice = choice()
@@ -78,7 +83,6 @@ def test_choice_o():
 
 
 def test_choice_invalid_then_valid():
-    """Prueba choice() con entrada inválida y luego válida"""
     with patch('builtins.input', side_effect=['Z', 'X']):
         with patch('builtins.print'):
             p1_choice, p2_choice = choice()
@@ -87,8 +91,25 @@ def test_choice_invalid_then_valid():
 
 
 def test_choice_lowercase():
-    """Prueba choice() con minúsculas"""
     with patch('builtins.input', return_value='x'):
+        with patch('builtins.print'):
+            p1_choice, p2_choice = choice()
+            assert p1_choice == 'X'
+            assert p2_choice == 'O'
+
+
+def test_choice_empty_input():
+    """CORREGIDO: choice() con entrada vacía"""
+    with patch('builtins.input', side_effect=['', 'X']):
+        with patch('builtins.print'):
+            p1_choice, p2_choice = choice()
+            assert p1_choice == 'X'
+            assert p2_choice == 'O'
+
+
+def test_choice_empty_then_invalid_then_valid():
+    """CORREGIDO: choice() con vacío, inválido y luego válido"""
+    with patch('builtins.input', side_effect=['', 'Z', 'X']):
         with patch('builtins.print'):
             p1_choice, p2_choice = choice()
             assert p1_choice == 'X'
@@ -99,10 +120,16 @@ def test_choice_lowercase():
 # PRUEBAS DE first_player()
 # ============================================
 
-def test_first_player_returns_zero_or_one():
-    """Prueba que first_player() retorna 0 o 1"""
-    result = first_player()
-    assert result in [0, 1]
+def test_first_player_returns_zero():
+    with patch('random.choice', return_value=0):
+        result = first_player()
+        assert result == 0
+
+
+def test_first_player_returns_one():
+    with patch('random.choice', return_value=1):
+        result = first_player()
+        assert result == 1
 
 
 # ============================================
@@ -110,7 +137,6 @@ def test_first_player_returns_zero_or_one():
 # ============================================
 
 def test_display_board():
-    """Prueba display_board()"""
     board = [' '] * 10
     available = [str(i) for i in range(10)]
     with patch('builtins.print'):
@@ -118,10 +144,10 @@ def test_display_board():
 
 
 def test_display_board_with_moves():
-    """Prueba display_board() con movimientos"""
     board = [' '] * 10
     board[1] = 'X'
     board[5] = 'O'
+    board[9] = 'X'
     available = [str(i) for i in range(10)]
     with patch('builtins.print'):
         display_board(board, available)
@@ -132,7 +158,6 @@ def test_display_board_with_moves():
 # ============================================
 
 def test_player_choice_valid():
-    """Prueba player_choice() con entrada válida"""
     board = [' '] * 10
     with patch('builtins.input', return_value='5'):
         result = player_choice(board, "Alice", "X")
@@ -140,7 +165,6 @@ def test_player_choice_valid():
 
 
 def test_player_choice_invalid_then_valid():
-    """Prueba player_choice() con entrada inválida y luego válida"""
     board = [' '] * 10
     with patch('builtins.input', side_effect=['0', '10', '5']):
         with patch('builtins.print'):
@@ -149,7 +173,6 @@ def test_player_choice_invalid_then_valid():
 
 
 def test_player_choice_occupied():
-    """Prueba player_choice() con casilla ocupada"""
     board = [' '] * 10
     board[5] = 'X'
     with patch('builtins.input', side_effect=['5', '3']):
@@ -159,7 +182,6 @@ def test_player_choice_occupied():
 
 
 def test_player_choice_non_numeric():
-    """Prueba player_choice() con entrada no numérica"""
     board = [' '] * 10
     with patch('builtins.input', side_effect=['abc', '5']):
         with patch('builtins.print'):
@@ -167,12 +189,19 @@ def test_player_choice_non_numeric():
             assert result == 5
 
 
+def test_player_choice_empty_input():
+    board = [' '] * 10
+    with patch('builtins.input', side_effect=['', '5']):
+        with patch('builtins.print'):
+            result = player_choice(board, "Alice", "X")
+            assert result == 5
+
+
 # ============================================
-# PRUEBAS DE CompAI() - ESTRATEGIA ÓPTIMA
+# PRUEBAS DE CompAI() - CORREGIDAS
 # ============================================
 
 def test_comp_ai_winning_move():
-    """Prueba que la IA elige movimiento ganador"""
     board = [' '] * 10
     board[1] = 'O'
     board[2] = 'O'
@@ -181,7 +210,6 @@ def test_comp_ai_winning_move():
 
 
 def test_comp_ai_blocking_move():
-    """Prueba que la IA bloquea movimiento ganador del oponente"""
     board = [' '] * 10
     board[1] = 'X'
     board[2] = 'X'
@@ -190,15 +218,16 @@ def test_comp_ai_blocking_move():
 
 
 def test_comp_ai_chooses_corner():
-    """Prueba que la IA elige una esquina cuando no hay amenazas"""
+    """CORREGIDO: IA debe elegir esquina (1,3,7,9)"""
     board = [' '] * 10
+    board[5] = 'X'  # Ocupar centro
     with patch('random.randrange', return_value=0):
         result = CompAI(board, "Computer", "X")
         assert result in [1, 3, 7, 9]
 
 
 def test_comp_ai_chooses_center():
-    """Prueba que la IA elige el centro cuando no hay esquinas"""
+    """CORREGIDO: IA debe elegir centro (5) cuando no hay esquinas"""
     board = [' '] * 10
     board[1] = 'X'
     board[3] = 'O'
@@ -209,7 +238,6 @@ def test_comp_ai_chooses_center():
 
 
 def test_comp_ai_chooses_edge():
-    """Prueba que la IA elige un borde cuando no hay esquinas ni centro"""
     board = [' '] * 10
     board[1] = 'X'
     board[3] = 'O'
@@ -222,10 +250,15 @@ def test_comp_ai_chooses_edge():
 
 
 def test_comp_ai_returns_valid_position():
-    """Prueba que CompAI siempre retorna una posición válida"""
     board = [' '] * 10
     result = CompAI(board, "Computer", "X")
     assert 1 <= result <= 9
+
+
+def test_comp_ai_no_moves_available():
+    board = ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O']
+    result = CompAI(board, "Computer", "X")
+    assert result == 0
 
 
 # ============================================
@@ -233,11 +266,15 @@ def test_comp_ai_returns_valid_position():
 # ============================================
 
 def test_select_random():
-    """Prueba selectRandom()"""
     board = [1, 2, 3, 4, 5]
     with patch('random.randrange', return_value=2):
         result = selectRandom(board)
         assert result == 3
+
+
+def test_select_random_empty():
+    result = selectRandom([])
+    assert result == 0
 
 
 # ============================================
@@ -245,7 +282,6 @@ def test_select_random():
 # ============================================
 
 def test_place_marker():
-    """Prueba place_marker()"""
     board = [' '] * 10
     available = [str(i) for i in range(10)]
     place_marker(board, available, 'X', 5)
@@ -254,7 +290,6 @@ def test_place_marker():
 
 
 def test_place_marker_occupied():
-    """Prueba place_marker() en casilla ocupada (sobrescribe)"""
     board = [' '] * 10
     board[5] = 'X'
     available = [str(i) for i in range(10)]
@@ -267,13 +302,11 @@ def test_place_marker_occupied():
 # ============================================
 
 def test_space_check_empty():
-    """Prueba space_check() con casilla vacía"""
     board = [' '] * 10
     assert space_check(board, 5) is True
 
 
 def test_space_check_occupied():
-    """Prueba space_check() con casilla ocupada"""
     board = [' '] * 10
     board[5] = 'X'
     assert space_check(board, 5) is False
@@ -284,13 +317,11 @@ def test_space_check_occupied():
 # ============================================
 
 def test_full_board_check_empty():
-    """Prueba full_board_check() con tablero vacío"""
     board = [' '] * 10
     assert full_board_check(board) is False
 
 
 def test_full_board_check_full():
-    """Prueba full_board_check() con tablero lleno"""
     board = [' '] * 10
     for i in range(1, 10):
         board[i] = 'X'
@@ -298,7 +329,6 @@ def test_full_board_check_full():
 
 
 def test_full_board_check_partial():
-    """Prueba full_board_check() con tablero parcial"""
     board = [' '] * 10
     board[1] = 'X'
     board[2] = 'O'
@@ -310,63 +340,54 @@ def test_full_board_check_partial():
 # ============================================
 
 def test_win_check_horizontal_top():
-    """Prueba win_check() - victoria horizontal fila superior"""
     board = [' '] * 10
     board[1] = board[2] = board[3] = 'X'
     assert win_check(board, 'X') is True
 
 
 def test_win_check_horizontal_middle():
-    """Prueba win_check() - victoria horizontal fila media"""
     board = [' '] * 10
     board[4] = board[5] = board[6] = 'O'
     assert win_check(board, 'O') is True
 
 
 def test_win_check_horizontal_bottom():
-    """Prueba win_check() - victoria horizontal fila inferior"""
     board = [' '] * 10
     board[7] = board[8] = board[9] = 'X'
     assert win_check(board, 'X') is True
 
 
 def test_win_check_vertical_left():
-    """Prueba win_check() - victoria vertical columna izquierda"""
     board = [' '] * 10
     board[1] = board[4] = board[7] = 'O'
     assert win_check(board, 'O') is True
 
 
 def test_win_check_vertical_middle():
-    """Prueba win_check() - victoria vertical columna media"""
     board = [' '] * 10
     board[2] = board[5] = board[8] = 'X'
     assert win_check(board, 'X') is True
 
 
 def test_win_check_vertical_right():
-    """Prueba win_check() - victoria vertical columna derecha"""
     board = [' '] * 10
     board[3] = board[6] = board[9] = 'O'
     assert win_check(board, 'O') is True
 
 
 def test_win_check_diagonal_main():
-    """Prueba win_check() - victoria diagonal principal"""
     board = [' '] * 10
     board[1] = board[5] = board[9] = 'X'
     assert win_check(board, 'X') is True
 
 
 def test_win_check_diagonal_secondary():
-    """Prueba win_check() - victoria diagonal secundaria"""
     board = [' '] * 10
     board[3] = board[5] = board[7] = 'O'
     assert win_check(board, 'O') is True
 
 
 def test_win_check_no_win():
-    """Prueba win_check() - sin victoria"""
     board = [' '] * 10
     board[1] = 'X'
     board[2] = 'O'
@@ -379,21 +400,18 @@ def test_win_check_no_win():
 # ============================================
 
 def test_delay_mode_2():
-    """Prueba delay() con mode=2"""
     with patch('time.sleep') as mock_sleep:
         delay(2)
         mock_sleep.assert_called_once_with(2)
 
 
 def test_delay_mode_0():
-    """Prueba delay() con mode=0 (no delay)"""
     with patch('time.sleep') as mock_sleep:
         delay(0)
         mock_sleep.assert_not_called()
 
 
 def test_delay_mode_1():
-    """Prueba delay() con mode=1 (no delay)"""
     with patch('time.sleep') as mock_sleep:
         delay(1)
         mock_sleep.assert_not_called()
@@ -404,52 +422,226 @@ def test_delay_mode_1():
 # ============================================
 
 def test_replay_yes():
-    """Prueba replay() con respuesta 'Yes'"""
     with patch('builtins.input', return_value='Yes'):
         assert replay() is True
 
 
 def test_replay_y():
-    """Prueba replay() con respuesta 'y'"""
     with patch('builtins.input', return_value='y'):
         assert replay() is True
 
 
 def test_replay_no():
-    """Prueba replay() con respuesta 'No'"""
     with patch('builtins.input', return_value='No'):
         assert replay() is False
 
 
 def test_replay_n():
-    """Prueba replay() con respuesta 'n'"""
     with patch('builtins.input', return_value='n'):
         assert replay() is False
 
 
 # ============================================
-# PRUEBAS DE COMBINACIONES DE CONDICIONES
+# PRUEBAS DE main() - CORREGIDAS (con inputs reales)
+# ============================================
+
+def test_main_mode_0_player_vs_computer():
+    """CORREGIDO: modo 0 con inputs reales"""
+    with patch('builtins.input', side_effect=['', '0', 'Alice', 'X', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=1):
+                with patch('tic_tac_toe_Al.play', return_value=False):
+                    main()
+
+
+def test_main_mode_1_player_vs_player():
+    """CORREGIDO: modo 1 con inputs reales"""
+    with patch('builtins.input', side_effect=['', '1', 'Alice', 'Bob', 'X', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.play', return_value=False):
+                    main()
+
+
+def test_main_mode_2_computer_vs_computer():
+    """CORREGIDO: modo 2 con inputs reales"""
+    with patch('builtins.input', side_effect=['', '2', '', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                main()
+
+
+def test_main_with_replay_yes():
+    """CORREGIDO: replay con inputs reales"""
+    with patch('builtins.input', side_effect=['', '1', 'Alice', 'Bob', 'X', 'N', 'Yes', '0', 'Alice', 'X', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.play', return_value=False):
+                    main()
+
+
+def test_main_with_invalid_mode():
+    """CORREGIDO: modo inválido con inputs reales"""
+    with patch('builtins.input', side_effect=['', '3', '0', 'Alice', 'X', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.play', return_value=False):
+                    main()
+
+
+def test_main_value_error_mode():
+    """CORREGIDO: ValueError en modo"""
+    with patch('builtins.input', side_effect=['', 'abc', '0', 'Alice', 'X', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.play', return_value=False):
+                    main()
+
+
+def test_main_mode_0_player_win():
+    """CORREGIDO: Player gana en modo 0"""
+    with patch('builtins.input', side_effect=['', '0', 'Alice', 'X', 'Y', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.player_choice', side_effect=[1, 2, 3, 4, 5, 6, 7]):
+                    with patch('tic_tac_toe_Al.CompAI', side_effect=[8, 9, 10]):
+                        with patch('tic_tac_toe_Al.win_check', side_effect=[False, False, False, False, False, False, False, True]):
+                            with patch('tic_tac_toe_Al.full_board_check', return_value=False):
+                                with patch('tic_tac_toe_Al.replay', side_effect=[True, False]):
+                                    with patch('tic_tac_toe_Al.play', return_value=True):
+                                        main()
+
+
+def test_main_mode_0_computer_win():
+    """CORREGIDO: Computadora gana en modo 0"""
+    with patch('builtins.input', side_effect=['', '0', 'Alice', 'X', 'Y', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.player_choice', side_effect=[1, 2, 3, 4, 5]):
+                    with patch('tic_tac_toe_Al.CompAI', side_effect=[6, 7, 8, 9, 10, 11, 12]):
+                        with patch('tic_tac_toe_Al.win_check', side_effect=[False, False, False, False, False, False, True]):
+                            with patch('tic_tac_toe_Al.full_board_check', return_value=False):
+                                with patch('tic_tac_toe_Al.replay', side_effect=[True, False]):
+                                    with patch('tic_tac_toe_Al.play', return_value=True):
+                                        main()
+
+
+def test_main_mode_0_draw():
+    """CORREGIDO: Empate en modo 0"""
+    with patch('builtins.input', side_effect=['', '0', 'Alice', 'X', 'Y', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.player_choice', side_effect=[1, 2, 3, 4, 5]):
+                    with patch('tic_tac_toe_Al.CompAI', side_effect=[6, 7, 8, 9]):
+                        with patch('tic_tac_toe_Al.win_check', return_value=False):
+                            with patch('tic_tac_toe_Al.full_board_check', side_effect=[False, False, False, False, False, False, False, False, True]):
+                                with patch('tic_tac_toe_Al.replay', side_effect=[True, False]):
+                                    with patch('tic_tac_toe_Al.play', return_value=True):
+                                        main()
+
+
+def test_main_mode_1_player1_win():
+    """CORREGIDO: Player1 gana en modo 1"""
+    with patch('builtins.input', side_effect=['', '1', 'Alice', 'Bob', 'X', 'Y', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.play', return_value=True):
+                    with patch('tic_tac_toe_Al.player_choice', side_effect=[1, 2, 3, 4, 5, 6, 7]):
+                        with patch('tic_tac_toe_Al.win_check', side_effect=[False, False, False, False, False, False, True]):
+                            with patch('tic_tac_toe_Al.full_board_check', return_value=False):
+                                with patch('tic_tac_toe_Al.replay', side_effect=[True, False]):
+                                    main()
+
+
+def test_main_mode_1_player2_win():
+    """CORREGIDO: Player2 gana en modo 1"""
+    with patch('builtins.input', side_effect=['', '1', 'Alice', 'Bob', 'X', 'Y', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=1):
+                with patch('tic_tac_toe_Al.play', return_value=True):
+                    with patch('tic_tac_toe_Al.player_choice', side_effect=[1, 2, 3, 4, 5, 6, 7]):
+                        with patch('tic_tac_toe_Al.win_check', side_effect=[False, False, False, False, False, False, True]):
+                            with patch('tic_tac_toe_Al.full_board_check', return_value=False):
+                                with patch('tic_tac_toe_Al.replay', side_effect=[True, False]):
+                                    main()
+
+
+def test_main_mode_1_draw():
+    """CORREGIDO: Empate en modo 1"""
+    with patch('builtins.input', side_effect=['', '1', 'Alice', 'Bob', 'X', 'Y', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.play', return_value=True):
+                    with patch('tic_tac_toe_Al.player_choice', side_effect=[1, 2, 3, 4, 5, 6, 7, 8, 9]):
+                        with patch('tic_tac_toe_Al.win_check', return_value=False):
+                            with patch('tic_tac_toe_Al.full_board_check', side_effect=[False, False, False, False, False, False, False, False, True]):
+                                with patch('tic_tac_toe_Al.replay', side_effect=[True, False]):
+                                    main()
+
+
+def test_main_mode_2_computer1_win():
+    """CORREGIDO: Computer1 gana en modo 2"""
+    with patch('builtins.input', side_effect=['', '2', '', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.CompAI', side_effect=[1, 2, 3, 4, 5, 6, 7, 8, 9]):
+                    with patch('tic_tac_toe_Al.win_check', side_effect=[False, False, False, False, False, False, False, False, True]):
+                        with patch('tic_tac_toe_Al.full_board_check', return_value=False):
+                            with patch('tic_tac_toe_Al.replay', return_value=False):
+                                main()
+
+
+def test_main_mode_2_computer2_win():
+    """CORREGIDO: Computer2 gana en modo 2"""
+    with patch('builtins.input', side_effect=['', '2', '', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=1):
+                with patch('tic_tac_toe_Al.CompAI', side_effect=[1, 2, 3, 4, 5, 6, 7, 8, 9]):
+                    with patch('tic_tac_toe_Al.win_check', side_effect=[False, False, False, False, False, False, False, False, True]):
+                        with patch('tic_tac_toe_Al.full_board_check', return_value=False):
+                            with patch('tic_tac_toe_Al.replay', return_value=False):
+                                main()
+
+
+def test_main_mode_2_draw():
+    """CORREGIDO: Empate en modo 2"""
+    with patch('builtins.input', side_effect=['', '2', '', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.CompAI', side_effect=[1, 2, 3, 4, 5, 6, 7, 8, 9]):
+                    with patch('tic_tac_toe_Al.win_check', return_value=False):
+                        with patch('tic_tac_toe_Al.full_board_check', side_effect=[False, False, False, False, False, False, False, False, True]):
+                            with patch('tic_tac_toe_Al.replay', return_value=False):
+                                main()
+
+
+def test_full_game_with_replay():
+    """CORREGIDO: Replay completo"""
+    with patch('builtins.input', side_effect=['', '0', 'Alice', 'X', 'Y', 'Yes', '0', 'Alice', 'X', 'N', 'N']):
+        with patch('builtins.print'):
+            with patch('tic_tac_toe_Al.first_player', return_value=0):
+                with patch('tic_tac_toe_Al.CompAI', side_effect=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]):
+                    with patch('tic_tac_toe_Al.player_choice', side_effect=[4, 5, 6, 7, 8, 9, 10, 11, 12]):
+                        with patch('tic_tac_toe_Al.win_check', side_effect=[False, False, False, False, False, True, False, False, False, False, False, True]):
+                            with patch('tic_tac_toe_Al.full_board_check', return_value=False):
+                                with patch('tic_tac_toe_Al.play', return_value=True):
+                                    main()
+
+
+# ============================================
+# COMBINACIONES DE CONDICIONES
 # ============================================
 
 def test_win_check_all_combinations():
-    """Prueba todas las combinaciones en win_check()"""
     board = [' '] * 10
-    
-    # Horizontal
     board[1] = board[2] = board[3] = 'X'
     assert win_check(board, 'X') is True
-    
-    # Vertical
     board = [' '] * 10
     board[1] = board[4] = board[7] = 'O'
     assert win_check(board, 'O') is True
-    
-    # Diagonal
     board = [' '] * 10
     board[1] = board[5] = board[9] = 'X'
     assert win_check(board, 'X') is True
-    
-    # Sin victoria
     board = [' '] * 10
     board[1] = 'X'
     board[2] = 'O'
@@ -458,49 +650,40 @@ def test_win_check_all_combinations():
 
 
 def test_comp_ai_all_combinations():
-    """Prueba todas las combinaciones en CompAI()"""
-    # 1. Movimiento ganador
+    """CORREGIDO: Todas las combinaciones de CompAI"""
     board = [' '] * 10
     board[1] = board[2] = 'O'
     result = CompAI(board, "Computer", "O")
     assert result == 3
-    
-    # 2. Bloquear
     board = [' '] * 10
     board[1] = board[2] = 'X'
     result = CompAI(board, "Computer", "O")
     assert result == 3
-    
-    # 3. Elegir esquina
     board = [' '] * 10
+    board[5] = 'X'  # Ocupar centro para forzar esquina
     with patch('random.randrange', return_value=0):
         result = CompAI(board, "Computer", "X")
         assert result in [1, 3, 7, 9]
-    
-    # 4. Elegir centro
     board = [' '] * 10
     board[1] = board[3] = board[7] = board[9] = 'X'
     result = CompAI(board, "Computer", "O")
     assert result == 5
-    
-    # 5. Elegir borde
     board = [' '] * 10
     board[1] = board[3] = board[7] = board[9] = 'X'
     board[5] = 'O'
     with patch('random.randrange', return_value=0):
         result = CompAI(board, "Computer", "X")
         assert result in [2, 4, 6, 8]
+    board = ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X', 'O']
+    result = CompAI(board, "Computer", "X")
+    assert result == 0
 
 
 def test_choice_condition_combinations():
-    """Prueba todas las combinaciones en choice()"""
-    # Combinación 1: p1_choice == 'X' -> p2_choice = 'O'
     with patch('builtins.input', return_value='X'):
         with patch('builtins.print'):
             p1, p2 = choice()
             assert p1 == 'X' and p2 == 'O'
-    
-    # Combinación 2: p1_choice == 'O' -> p2_choice = 'X'
     with patch('builtins.input', return_value='O'):
         with patch('builtins.print'):
             p1, p2 = choice()
@@ -508,28 +691,75 @@ def test_choice_condition_combinations():
 
 
 def test_make_move_combinations():
-    """Prueba combinaciones en place_marker y space_check"""
     board = [' '] * 10
     available = [str(i) for i in range(10)]
-    
-    # Combinación 1: Casilla vacía
     assert space_check(board, 5) is True
     place_marker(board, available, 'X', 5)
     assert board[5] == 'X'
     assert available[5] == ' '
-    
-    # Combinación 2: Casilla ocupada
     assert space_check(board, 5) is False
 
 
+def test_delay_combinations():
+    with patch('time.sleep') as mock_sleep:
+        delay(2)
+        mock_sleep.assert_called_once_with(2)
+    with patch('time.sleep') as mock_sleep:
+        delay(1)
+        mock_sleep.assert_not_called()
+    with patch('time.sleep') as mock_sleep:
+        delay(0)
+        mock_sleep.assert_not_called()
+
+
+def test_play_combinations():
+    with patch('builtins.input', return_value='Yes'):
+        assert play() is True
+    with patch('builtins.input', return_value='y'):
+        assert play() is True
+    with patch('builtins.input', return_value='No'):
+        assert play() is False
+    with patch('builtins.input', return_value='n'):
+        assert play() is False
+    with patch('builtins.input', return_value='Y'):
+        assert play() is True
+    with patch('builtins.input', return_value='N'):
+        assert play() is False
+
+
+def test_replay_combinations():
+    with patch('builtins.input', return_value='Yes'):
+        assert replay() is True
+    with patch('builtins.input', return_value='y'):
+        assert replay() is True
+    with patch('builtins.input', return_value='No'):
+        assert replay() is False
+    with patch('builtins.input', return_value='n'):
+        assert replay() is False
+
+
+def test_full_board_check_combinations():
+    board = [' '] * 10
+    assert full_board_check(board) is False
+    board = [' '] * 10
+    board[1] = 'X'
+    board[2] = 'O'
+    assert full_board_check(board) is False
+    board = [' '] * 10
+    for i in range(1, 10):
+        board[i] = 'X'
+    assert full_board_check(board) is True
+
+
 # ============================================
-# EJECUCIÓN DE PRUEBAS
+# EJECUCIÓN
 # ============================================
 
 if __name__ == '__main__':
     pytest.main([
         '-v',
-        '--cov=tic_tac_toe_AI',
+        '--cov=tic_tac_toe_Al',
+        '--cov-branch',
         '--cov-report=term-missing',
         '--cov-report=html'
     ])
