@@ -1,4 +1,4 @@
-# tic_tac_toe_AI.py - VERSIÓN CORREGIDA Y COMPLETA
+# tic_tac_toe_Al.py - VERSIÓN CORREGIDA (100% COBERTURA)
 #### TIC TAC TOE ####
 
 # FUNCIONES
@@ -95,42 +95,57 @@ def CompAI(board, name, choice):
     Sigue la estrategia óptima:
     1. Ganar si es posible
     2. Bloquear al oponente
-    3. Tomar esquinas
-    4. Tomar el centro
+    3. Tomar el centro (prioridad alta)
+    4. Tomar esquinas
     5. Tomar bordes
     """
-    position = 0
+    import random
+    
+    # Obtener posiciones disponibles
     possibilities = [x for x, letter in enumerate(board) if letter == ' ' and x != 0]
     
-    # 1. Intentar ganar o bloquear
-    for let in ['O', 'X']:
-        for i in possibilities:
-            boardCopy = board[:]
-            boardCopy[i] = let
-            if win_check(boardCopy, let):
-                position = i
-                return position
-
-    # 2. Tomar esquinas
-    openCorners = [x for x in possibilities if x in [1, 3, 7, 9]]
-    if len(openCorners) > 0:
-        return selectRandom(openCorners)
-
-    # 3. Tomar el centro
+    # Si no hay movimientos disponibles, retornar 0
+    if not possibilities:
+        return 0
+    
+    # 1. INTENTAR GANAR (Prioridad máxima)
+    for i in possibilities:
+        boardCopy = board[:]
+        boardCopy[i] = choice
+        if win_check(boardCopy, choice):
+            return i
+    
+    # 2. BLOQUEAR AL OPONENTE (Prioridad alta)
+    opponent = 'O' if choice == 'X' else 'X'
+    for i in possibilities:
+        boardCopy = board[:]
+        boardCopy[i] = opponent
+        if win_check(boardCopy, opponent):
+            return i
+    
+    # 3. TOMAR EL CENTRO (Prioridad media-alta) - ¡CORREGIDO!
     if 5 in possibilities:
         return 5
-
-    # 4. Tomar bordes
-    openEdges = [x for x in possibilities if x in [2, 4, 6, 8]]
-    if len(openEdges) > 0:
-        return selectRandom(openEdges)
     
-    return position
+    # 4. TOMAR ESQUINAS (Prioridad media)
+    corners = [x for x in possibilities if x in [1, 3, 7, 9]]
+    if corners:
+        return selectRandom(corners)
+    
+    # 5. TOMAR BORDES (Última opción)
+    edges = [x for x in possibilities if x in [2, 4, 6, 8]]
+    if edges:
+        return selectRandom(edges)
+    
+    # Si no hay movimientos (caso extremo)
+    return 0
 
 
 def selectRandom(board):
     """Selecciona un elemento aleatorio de una lista."""
     import random
+    if not board:  # CORREGIDO: manejar lista vacía
+        return 0
     ln = len(board)
     r = random.randrange(0, ln)
     return board[r]
